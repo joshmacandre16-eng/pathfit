@@ -591,6 +591,14 @@
             margin: 0 auto 1.5rem;
         }
 
+        .coach-avatar-image {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin: 0 auto 1.5rem;
+        }
+
         .coach-card h3 {
             font-size: 1.25rem;
             font-weight: 700;
@@ -885,7 +893,7 @@
         </div>
     </nav>
 
-    <!-- Hero Section -->
+<!-- Hero Section -->
     <section class="hero" id="home">
         <div class="hero-container">
             <div class="hero-content">
@@ -894,10 +902,10 @@
                         <circle cx="12" cy="12" r="10"></circle>
                         <path d="M12 6v6l4 2"></path>
                     </svg>
-                    <span>AI-Powered Fitness Platform</span>
+                    <span>{{ isset($welcomeData['hero']['badge_text']) ? $welcomeData['hero']['badge_text']->value : 'AI-Powered Fitness Platform' }}</span>
                 </div>
-                <h1>Your AI-Powered <br><span class="gradient-text">Fitness Journey</span></h1>
-                <p>Experience personalized workout plans, intelligent progress tracking, and adaptive training powered by advanced artificial intelligence</p>
+                <h1>Your AI-Powered <br><span class="gradient-text">{{ isset($welcomeData['hero']['gradient_text']) ? $welcomeData['hero']['gradient_text']->value : 'Fitness Journey' }}</span></h1>
+                <p>{{ isset($welcomeData['hero']['subtitle']) ? $welcomeData['hero']['subtitle']->value : 'Experience personalized workout plans, intelligent progress tracking, and adaptive training powered by advanced artificial intelligence' }}</p>
                 <div class="hero-actions">
                     <button class="btn-large btn-hero-primary" onclick="scrollTo('features')">
                         <a href="{{ route('login')}}" class="Started">
@@ -917,21 +925,21 @@
                             <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
                             <polyline points="22 4 12 14.01 9 11.01"></polyline>
                         </svg>
-                        <span>Personalized Plans</span>
+                        <span>{{ isset($welcomeData['hero']['feature_1']) ? $welcomeData['hero']['feature_1']->value : 'Personalized Plans' }}</span>
                     </div>
                     <div class="feature-item">
                         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                             <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
                             <polyline points="22 4 12 14.01 9 11.01"></polyline>
                         </svg>
-                        <span>Real-time Coaching</span>
+                        <span>{{ isset($welcomeData['hero']['feature_2']) ? $welcomeData['hero']['feature_2']->value : 'Real-time Coaching' }}</span>
                     </div>
                     <div class="feature-item">
                         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                             <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
                             <polyline points="22 4 12 14.01 9 11.01"></polyline>
                         </svg>
-                        <span>Progress Analytics</span>
+                        <span>{{ isset($welcomeData['hero']['feature_3']) ? $welcomeData['hero']['feature_3']->value : 'Progress Analytics' }}</span>
                     </div>
                 </div>
 
@@ -939,7 +947,7 @@
             <div class="hero-visual">
                 <div class="athlete-image-container">
                     <div class="image-wrapper">
-                        <img src="{{ asset('templates/dist/img/athlete.jpg') }}" alt="Athletic Training">
+                        <img src="{{ isset($welcomeData['hero']['hero_image']) && $welcomeData['hero']['hero_image']->value ? asset('storage/' . $welcomeData['hero']['hero_image']->value) : asset('templates/dist/img/athlete.jpg') }}" alt="Athletic Training">
                         <div class="image-overlay"></div>
                     </div>
 
@@ -948,12 +956,12 @@
         </div>
     </section>
 
-    <!-- Features Section -->
+<!-- Features Section -->
     <section class="features" id="features">
         <div class="section-header">
-            <span class="section-tag">FEATURES</span>
-            <h2>Everything You Need to Succeed</h2>
-            <p>Powered by advanced AI technology to deliver personalized fitness experiences that actually work.</p>
+            <span class="section-tag">{{ isset($welcomeData['features']['section_tag']) ? $welcomeData['features']['section_tag']->value : 'FEATURES' }}</span>
+            <h2>{{ isset($welcomeData['features']['section_title']) ? $welcomeData['features']['section_title']->value : 'Everything You Need to Succeed' }}</h2>
+            <p>{{ isset($welcomeData['features']['section_subtitle']) ? $welcomeData['features']['section_subtitle']->value : 'Powered by advanced AI technology to deliver personalized fitness experiences that actually work.' }}</p>
         </div>
         <div class="features-grid">
             <div class="feature-card">
@@ -963,8 +971,8 @@
                         <path d="M2 17l10 5 10-5M2 12l10 5 10-5"></path>
                     </svg>
                 </div>
-                <h3>Smart Workout Plans</h3>
-                <p>AI-generated programs tailored to your fitness level, goals, and available equipment. Adapts in real-time based on your performance.</p>
+                <h3>{{ isset($welcomeData['features']['feature_1_title']) ? $welcomeData['features']['feature_1_title']->value : 'Smart Workout Plans' }}</h3>
+                <p>{{ isset($welcomeData['features']['feature_1_description']) ? $welcomeData['features']['feature_1_description']->value : 'AI-generated programs tailored to your fitness level, goals, and available equipment. Adapts in real-time based on your performance.' }}</p>
             </div>
             <div class="feature-card">
                 <div class="feature-icon">
@@ -972,8 +980,8 @@
                         <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline>
                     </svg>
                 </div>
-                <h3>Real-Time Analytics</h3>
-                <p>Track every metric that matters with comprehensive analytics and insights to optimize your training.</p>
+                <h3>{{ isset($welcomeData['features']['feature_2_title']) ? $welcomeData['features']['feature_2_title']->value : 'Real-Time Analytics' }}</h3>
+                <p>{{ isset($welcomeData['features']['feature_2_description']) ? $welcomeData['features']['feature_2_description']->value : 'Track every metric that matters with comprehensive analytics and insights to optimize your training.' }}</p>
             </div>
             <div class="feature-card">
                 <div class="feature-icon">
@@ -983,8 +991,8 @@
                         <path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"></path>
                     </svg>
                 </div>
-                <h3>Expert Coaching</h3>
-                <p>Get guidance from certified trainers and AI-powered form corrections to ensure safe, effective workouts.</p>
+                <h3>{{ isset($welcomeData['features']['feature_3_title']) ? $welcomeData['features']['feature_3_title']->value : 'Expert Coaching' }}</h3>
+                <p>{{ isset($welcomeData['features']['feature_3_description']) ? $welcomeData['features']['feature_3_description']->value : 'Get guidance from certified trainers and AI-powered form corrections to ensure safe, effective workouts.' }}</p>
             </div>
             <div class="feature-card">
                 <div class="feature-icon">
@@ -992,8 +1000,8 @@
                         <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91"></path>
                     </svg>
                 </div>
-                <h3>Nutrition Guidance</h3>
-                <p>Personalized meal plans and nutrition tracking integrated with your training program for optimal results.</p>
+                <h3>{{ isset($welcomeData['features']['feature_4_title']) ? $welcomeData['features']['feature_4_title']->value : 'Nutrition Guidance' }}</h3>
+                <p>{{ isset($welcomeData['features']['feature_4_description']) ? $welcomeData['features']['feature_4_description']->value : 'Personalized meal plans and nutrition tracking integrated with your training program for optimal results.' }}</p>
             </div>
             <div class="feature-card">
                 <div class="feature-icon">
@@ -1002,8 +1010,8 @@
                         <polyline points="12 6 12 12 16 14"></polyline>
                     </svg>
                 </div>
-                <h3>Progress Tracking</h3>
-                <p>Visualize your journey with detailed progress charts, milestone tracking, and achievement badges.</p>
+                <h3>{{ isset($welcomeData['features']['feature_5_title']) ? $welcomeData['features']['feature_5_title']->value : 'Progress Tracking' }}</h3>
+                <p>{{ isset($welcomeData['features']['feature_5_description']) ? $welcomeData['features']['feature_5_description']->value : 'Visualize your journey with detailed progress charts, milestone tracking, and achievement badges.' }}</p>
             </div>
             <div class="feature-card">
                 <div class="feature-icon">
@@ -1013,53 +1021,67 @@
                         <polyline points="21 15 16 10 5 21"></polyline>
                     </svg>
                 </div>
-                <h3>Video Workouts</h3>
-                <p>Access thousands of HD workout videos with detailed instructions and multiple camera angles.</p>
+                <h3>{{ isset($welcomeData['features']['feature_6_title']) ? $welcomeData['features']['feature_6_title']->value : 'Video Workouts' }}</h3>
+                <p>{{ isset($welcomeData['features']['feature_6_description']) ? $welcomeData['features']['feature_6_description']->value : 'Access thousands of HD workout videos with detailed instructions and multiple camera angles.' }}</p>
             </div>
         </div>
     </section>
 
-    <!-- How It Works Section -->
+<!-- How It Works Section -->
     <section class="how-it-works" id="how-it-works">
         <div class="steps-container">
             <div class="section-header">
-                <span class="section-tag">HOW IT WORKS</span>
-                <h2>Get Started in 4 Simple Steps</h2>
-                <p>Begin your transformation journey with our streamlined onboarding process.</p>
+                <span class="section-tag">{{ isset($welcomeData['how_it_works']['section_tag']) ? $welcomeData['how_it_works']['section_tag']->value : 'HOW IT WORKS' }}</span>
+                <h2>{{ isset($welcomeData['how_it_works']['section_title']) ? $welcomeData['how_it_works']['section_title']->value : 'Get Started in 4 Simple Steps' }}</h2>
+                <p>{{ isset($welcomeData['how_it_works']['section_subtitle']) ? $welcomeData['how_it_works']['section_subtitle']->value : 'Begin your transformation journey with our streamlined onboarding process.' }}</p>
             </div>
             <div class="steps-grid">
                 <div class="step-card">
                     <div class="step-number">1</div>
-                    <h3>Create Your Profile</h3>
-                    <p>Tell us about your fitness level, goals, and preferences to personalize your experience.</p>
+                    <h3>{{ isset($welcomeData['how_it_works']['step_1_title']) ? $welcomeData['how_it_works']['step_1_title']->value : 'Create Your Profile' }}</h3>
+                    <p>{{ isset($welcomeData['how_it_works']['step_1_description']) ? $welcomeData['how_it_works']['step_1_description']->value : 'Tell us about your fitness level, goals, and preferences to personalize your experience.' }}</p>
                 </div>
                 <div class="step-card">
                     <div class="step-number">2</div>
-                    <h3>Get Your AI Plan</h3>
-                    <p>Our AI analyzes your data and generates a customized workout and nutrition plan just for you.</p>
+                    <h3>{{ isset($welcomeData['how_it_works']['step_2_title']) ? $welcomeData['how_it_works']['step_2_title']->value : 'Get Your AI Plan' }}</h3>
+                    <p>{{ isset($welcomeData['how_it_works']['step_2_description']) ? $welcomeData['how_it_works']['step_2_description']->value : 'Our AI analyzes your data and generates a customized workout and nutrition plan just for you.' }}</p>
                 </div>
                 <div class="step-card">
                     <div class="step-number">3</div>
-                    <h3>Start Training</h3>
-                    <p>Follow guided workouts with real-time feedback and form corrections from our AI coach.</p>
+                    <h3>{{ isset($welcomeData['how_it_works']['step_3_title']) ? $welcomeData['how_it_works']['step_3_title']->value : 'Start Training' }}</h3>
+                    <p>{{ isset($welcomeData['how_it_works']['step_3_description']) ? $welcomeData['how_it_works']['step_3_description']->value : 'Follow guided workouts with real-time feedback and form corrections from our AI coach.' }}</p>
                 </div>
                 <div class="step-card">
                     <div class="step-number">4</div>
-                    <h3>Track Progress</h3>
-                    <p>Monitor your improvements, celebrate milestones, and watch your plan adapt as you grow.</p>
+                    <h3>{{ isset($welcomeData['how_it_works']['step_4_title']) ? $welcomeData['how_it_works']['step_4_title']->value : 'Track Progress' }}</h3>
+                    <p>{{ isset($welcomeData['how_it_works']['step_4_description']) ? $welcomeData['how_it_works']['step_4_description']->value : 'Monitor your improvements, celebrate milestones, and watch your plan adapt as you grow.' }}</p>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Coaches Section -->
+<!-- Coaches Section -->
     <section class="coaches" id="coaches">
         <div class="section-header">
-            <span class="section-tag">OUR TEAM</span>
-            <h2>Train with Expert Coaches</h2>
-            <p>Learn from certified professionals who specialize in different areas of fitness and wellness.</p>
+            <span class="section-tag">{{ isset($welcomeData['coaches']['section_tag']) ? $welcomeData['coaches']['section_tag']->value : 'OUR TEAM' }}</span>
+            <h2>{{ isset($welcomeData['coaches']['section_title']) ? $welcomeData['coaches']['section_title']->value : 'Train with Expert Coaches' }}</h2>
+            <p>{{ isset($welcomeData['coaches']['section_subtitle']) ? $welcomeData['coaches']['section_subtitle']->value : 'Learn from certified professionals who specialize in different areas of fitness and wellness.' }}</p>
         </div>
         <div class="coaches-grid">
+            @forelse($coaches as $coach)
+            <div class="coach-card">
+                @if($coach->photo)
+                    <img src="{{ asset('storage/' . $coach->photo) }}" alt="{{ $coach->fname }} {{ $coach->lname }}" class="coach-avatar-image">
+                @else
+                    <div class="coach-avatar">
+                        {{ substr($coach->fname, 0, 1) }}{{ substr($coach->lname, 0, 1) }}
+                    </div>
+                @endif
+                <h3>{{ $coach->fname }} {{ $coach->lname }}</h3>
+                <div class="coach-specialty">{{ $coach->specialization ?? 'General Coaching' }}</div>
+                <p>{{ $coach->experience ?? 'Experienced coach dedicated to helping athletes achieve their goals.' }}</p>
+            </div>
+            @empty
             <div class="coach-card">
                 <div class="coach-avatar">AS</div>
                 <h3>Alexandra Smith</h3>
@@ -1084,6 +1106,7 @@
                 <div class="coach-specialty">Nutrition & Recovery</div>
                 <p>Sports nutritionist helping athletes optimize diet and recovery for peak performance.</p>
             </div>
+            @endforelse
         </div>
     </section>
 
@@ -1144,11 +1167,11 @@
             </div>
             <div class="footer-section">
                 <h4>Legal</h4>
-                <a href="#">Privacy Policy</a>
-                <a href="#">Terms of Service</a>
-                <a href="#">Cookie Policy</a>
-                <a href="#">Disclaimer</a>
-                <a href="#">Contact</a>
+                <a href="{{ route('privacy', 'privacy-policy') }}">Privacy Policy</a>
+                <a href="{{ route('term', 'terms-of-service') }}">Terms of Service</a>
+                <a href="{{ route('cookie', 'cookie-policy') }}">Cookie Policy</a>
+                <a href="{{ route('disclaimer', 'disclaimer') }}">Disclaimer</a>
+                <a href="{{ route('contact', 'contact') }}">Contact</a>
             </div>
         </div>
         <div class="footer-bottom">

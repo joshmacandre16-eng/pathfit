@@ -1,7 +1,7 @@
 @extends('layouts.master')
 
 @section('content')
-<div class="content-wrapper">
+<div class="content">
     <h1>AI-Based Features</h1>
     <p>This is the AI-Based index page. Add your AI-related content here.</p>
 

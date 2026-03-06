@@ -1,7 +1,7 @@
 @extends('layouts.masterathlete')
 
 @section('content')
-<div class="content-wrapper">
+<div class="content">
     <div class="content-header">
         <div class="container-fluid">
             <div class="row mb-2">

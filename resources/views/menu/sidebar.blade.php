@@ -10,65 +10,13 @@
     $sportActivityActive = in_array($curr_route, ['admin.sport_activity']) ? 'active' : '';
     $sportAvailableActive = in_array($curr_route, ['admin.sport_available']) ? 'active' : '';
     $assignCoachActive = in_array($curr_route, ['admin.assigncoach']) ? 'active' : '';
+    $welcomeContentActive = in_array($curr_route, ['admin.welcome-content.index', 'admin.welcome-content.edit']) ? 'active' : '';
+    $footerLinksActive = in_array($curr_route, ['admin.footer-links.index', 'admin.footer-links.create', 'admin.footer-links.edit']) ? 'active' : '';
 @endphp
-
-<style>
-    .nav-sidebar .nav-link {
-        background: linear-gradient(135deg, #ffffff 0%, #eeebf1 100%);
-        color: #fff;
-        border-radius: 8px;
-        margin: 5px 10px;
-        padding: 10px 15px;
-        transition: all 0.3s ease;
-        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-        text-decoration: none;
-        display: flex;
-        align-items: center;
-    }
-    .nav-sidebar .nav-link:hover {
-        background: linear-gradient(135deg, #1569d6 0%, #2649e4 100%);
-        transform: translateY(-2px);
-        box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-    }
-    .nav-sidebar .nav-link.active {
-        background: linear-gradient(135deg, #075685 0%, #135ec0 100%);
-        box-shadow: 0 4px 8px rgba(0,0,0,0.3);
-    }
-    .nav-sidebar .nav-link i {
-        margin-right: 10px;
-        font-size: 16px;
-    }
-    .nav-sidebar .nav-link p {
-        font-size: 14px;
-        font-weight: 500;
-        margin: 0;
-    }
-    .nav-header {
-        color: #333;
-        font-weight: bold;
-        font-size: 16px;
-        margin: 20px 10px 10px;
-        text-transform: uppercase;
-        letter-spacing: 1px;
-    }
-    .nav-sidebar {
-        padding: 10px 0;
-    }
-    .nav-sidebar .nav-item:last-child .nav-link {
-        background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%);
-    }
-    .nav-sidebar .nav-item:last-child .nav-link:hover {
-        background: linear-gradient(135deg, #fecfef 0%, #ff9a9e 100%);
-    }
-    .nav-link:active{
-        background: linear-gradient(135deg, #075685 0%, #135ec0 100%);
-        box-shadow: 0 4px 8px rgba(0,0,0,0.3);
-    }
-</style>
 
 <nav class="mt-2">
     <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-        <li class="nav-header" style="color: rgb(0, 0, 0)">Main Navigation</li>
+        <li class="nav-header">Main Navigation</li>
 
         <li class="nav-item">
             <a href="{{ route('admin.dashboard') }}" class="nav-link {{ $dashboardActive }}">
@@ -104,12 +52,7 @@
                 <p>Training Schedule</p>
             </a>
         </li>
-        <li class="nav-item">
-            <a href="{{ route('admin.profile.index') }}" class="nav-link {{ $profileActive }}">
-                <i class="nav-icon fas fa-user"></i>
-                <p>Profile</p>
-            </a>
-        </li>
+
          <li class="nav-item">
             <a href="{{ route('admin.sport_activity.index') }}" class="nav-link {{ $sportActivityActive }}">
                 <i class="nav-icon fas fa-running"></i>
@@ -129,14 +72,28 @@
                 <p>Coach Assign To The Sports</p>
             </a>
         </li>
+        
         <li class="nav-item">
-            <form method="POST" action="{{ route('logout') }}" style="display: inline;">
-                @csrf
-                <button type="submit" class="nav-link" style="background: none; border: none; padding: 0; color: inherit; text-decoration: none;">
-                    <p><i class="fas fa-power-off"></i> Sign Out</p>
-                </button>
-            </form>
+            <a href="{{ route('admin.welcome-content.index') }}" class="nav-link {{ $welcomeContentActive }}">
+                <i class="nav-icon fas fa-home"></i>
+                <p>Welcome Page Content</p>
+            </a>
         </li>
+        
+        <li class="nav-item">
+            <a href="{{ route('admin.footer-links.index') }}" class="nav-link {{ $footerLinksActive }}">
+                <i class="nav-icon fas fa-link"></i>
+                <p>Footer Links</p>
+            </a>
+        </li>
+        
+      <li class="nav-item">
+            <a href="{{ route('admin.profile.index') }}" class="nav-link {{ $profileActive }}">
+                <i class="nav-icon fas fa-user"></i>
+                <p>Profile</p>
+            </a>
+        </li>
+
     </ul>
 </nav>
-                        
+

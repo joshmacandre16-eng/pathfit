@@ -4,12 +4,12 @@
     Assigned Coach
 @endsection
 
-@section('body')
-<div class="content-wrapper" style="margin-top: -10px;">
+@section('content')
+<div class="content">
     <style>
         .coach-container {
             padding: 1.5rem;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #66e6ea 0%, #16cfcf 100%);
             min-height: 100vh;
             max-width: 1200px;
             margin: 0 auto;
@@ -69,6 +69,14 @@
             color: white;
             font-size: 2rem;
             font-weight: bold;
+            overflow: hidden;
+        }
+
+        .coach-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 50%;
         }
 
         .coach-info h4 {
@@ -132,11 +140,35 @@
             <h3>Coach Information</h3>
             @if($coach)
             <div class="coach-profile">
-                <div class="coach-avatar">{{ substr($coach->name, 0, 2) }}</div>
+                <div class="coach-avatar">
+                    @if($coach->photo)
+                        @php
+                            $photoPath = $coach->photo;
+                            $found = false;
+                            
+                            // Check different possible locations
+                            if (file_exists(public_path('storage/' . $photoPath))) {
+                                $found = true;
+                            } elseif (file_exists(public_path('storage/photos/' . $photoPath))) {
+                                $photoPath = 'photos/' . $photoPath;
+                                $found = true;
+                            } elseif (file_exists(public_path('images/' . $photoPath))) {
+                                $found = true;
+                            }
+                        @endphp
+                        @if($found)
+                            <img src="{{ asset('storage/' . $photoPath) }}" alt="{{ $coach->name }}">
+                        @else
+                            <span>{{ substr($coach->name, 0, 2) }}</span>
+                        @endif
+                    @else
+                        {{ substr($coach->name, 0, 2) }}
+                    @endif
+                </div>
                 <div class="coach-info">
                     <h4>{{ $coach->name }}</h4>
                     <p>{{ $coach->role }}</p>
-                    <p>Specialization: Professional Athletics Coach</p>
+                    <p>Specialization: {{ $coach->specialization ?: 'Professional Athletics Coach' }}</p>
                 </div>
             </div>
 

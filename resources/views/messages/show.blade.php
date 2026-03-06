@@ -1,9 +1,9 @@
-@extends('layouts.masterathlete')
+@extends(Auth::user()->role === 'Coach' ? 'layouts.mastercoach' : 'layouts.masterathlete')
 
 @section('title', 'Conversation with ' . $contact->name)
 
 @section('content')
-<div class="content-wrapper">
+<div class="content">
     <div class="row">
         <div class="col-md-12">
             <div class="card">
