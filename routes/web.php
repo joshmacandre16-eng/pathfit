@@ -8,15 +8,26 @@ use App\Http\Controllers\UsersController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\TrainingScheduleController;
+use App\Http\Controllers\SessionScheduleController;
 use App\Http\Controllers\SportActivityController;
 use App\Http\Controllers\SportAvailableController;
 use App\Http\Controllers\AiBasedController;
 use App\Http\Controllers\SportRequirementController;
 use App\Http\Controllers\MessageController;
+use App\Http\Controllers\WelcomeContentController;
+use App\Http\Controllers\WelcomeController;
+use App\Http\Controllers\FooterLinkController;
+use App\Http\Controllers\PrivacyController;
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', [WelcomeController::class, 'index']);
+
+// Public pages
+Route::get('/page/{slug}', [FooterLinkController::class, 'show'])->name('footer.show');
+Route::get('/privacy/{slug?}', [PrivacyController::class, 'show'])->name('privacy');
+Route::get('/terms/{slug?}', [PrivacyController::class, 'terms'])->name('term');
+Route::get('/cookie/{slug?}', [PrivacyController::class, 'cookie'])->name('cookie');
+Route::get('/disclaimer/{slug?}', [PrivacyController::class, 'disclaimer'])->name('disclaimer');
+Route::get('/contact/{slug?}', [PrivacyController::class, 'contact'])->name('contact');
 
 // Authentication routes
 Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');
@@ -41,7 +52,7 @@ Route::middleware(['auth', 'login_auth'])->group(function () {
     Route::post('/report-activity', [UserController::class, 'storeReportActivity'])->name('user.report-activity.store');
     Route::get('/messenger', [UserController::class, 'messenger'])->name('user.messenger');
 
-    // Message routes
+    // Message routes (legacy - redirects based on role)
     Route::get('/messages', [MessageController::class, 'index'])->name('messages.index');
     Route::get('/messages/{contact}', [MessageController::class, 'show'])->name('messages.show');
     Route::post('/messages/{contact}', [MessageController::class, 'store'])->name('messages.store');
@@ -87,8 +98,23 @@ Route::middleware(['auth', 'login_auth'])->group(function () {
         Route::put('/sport-available/{sportAvailable}', [SportAvailableController::class, 'update'])->name('sport_available.update');
         Route::delete('/sport-available/{sportAvailable}', [SportAvailableController::class, 'destroy'])->name('sport_available.destroy');
         Route::get('/ai-based', [AiBasedController::class, 'index'])->name('ai-based.index');
-        Route::post('/ai-based/run-assignment', [AiBasedController::class, 'runAiAssignment'])->name('ai-based.run-assignment');
+Route::post('/ai-based/run-assignment', [AiBasedController::class, 'runAiAssignment'])->name('ai-based.run-assignment');
         Route::post('/ai-based/enable-assistance', [AiBasedController::class, 'enableAiAssistance'])->name('ai-based.enable-assistance');
+        
+        // Welcome Content Management Routes
+        Route::get('/welcome-content', [WelcomeContentController::class, 'index'])->name('welcome-content.index');
+        Route::get('/welcome-content/{section}/edit', [WelcomeContentController::class, 'edit'])->name('welcome-content.edit');
+        Route::put('/welcome-content/{section}', [WelcomeContentController::class, 'update'])->name('welcome-content.update');
+        Route::post('/welcome-content', [WelcomeContentController::class, 'store'])->name('welcome-content.store');
+        Route::delete('/welcome-content/{id}', [WelcomeContentController::class, 'destroy'])->name('welcome-content.destroy');
+        
+        // Footer Links Management Routes
+        Route::get('/footer-links', [FooterLinkController::class, 'index'])->name('footer-links.index');
+        Route::get('/footer-links/create', [FooterLinkController::class, 'create'])->name('footer-links.create');
+        Route::post('/footer-links', [FooterLinkController::class, 'store'])->name('footer-links.store');
+        Route::get('/footer-links/{footerLink}/edit', [FooterLinkController::class, 'edit'])->name('footer-links.edit');
+        Route::put('/footer-links/{footerLink}', [FooterLinkController::class, 'update'])->name('footer-links.update');
+        Route::delete('/footer-links/{footerLink}', [FooterLinkController::class, 'destroy'])->name('footer-links.destroy');
     });
 
     // Athlete routes
@@ -99,6 +125,14 @@ Route::middleware(['auth', 'login_auth'])->group(function () {
         Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
         Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
         Route::get('/sport-suggestion', [UserController::class, 'sportSuggestion'])->name('sport-suggestion');
+
+        // Athlete Message routes
+        Route::get('/messages', [MessageController::class, 'athleteIndex'])->name('messages.index');
+        Route::get('/messages/{contact}', [MessageController::class, 'show'])->name('messages.show');
+        Route::post('/messages/{contact}', [MessageController::class, 'athleteStore'])->name('messages.store');
+
+        // Athlete Session Schedule routes
+        Route::get('/session-schedules', [SessionScheduleController::class, 'athleteIndex'])->name('session-schedules.index');
     });
 
     // Coach routes
@@ -121,11 +155,30 @@ Route::middleware(['auth', 'login_auth'])->group(function () {
         Route::get('/activity-reports', [UserController::class, 'coachActivityReports'])->name('activity-reports.index');
         Route::get('/activity-reports/create', [UserController::class, 'coachCreateActivityReport'])->name('activity-reports.create');
         Route::post('/activity-reports', [UserController::class, 'coachStoreActivityReport'])->name('activity-reports.store');
+
+        // Coach Message routes
         Route::get('/messages', [MessageController::class, 'coachIndex'])->name('messages.index');
+        Route::get('/messages/{contact}', [MessageController::class, 'show'])->name('messages.show');
+        Route::post('/messages/{contact}', [MessageController::class, 'coachStore'])->name('messages.store');
+
+        // Profile routes
+        Route::get('/profile', [ProfileController::class, 'index'])->name('profile.index');
+        Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('profile.edit');
+        Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+        Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
         // Sport Requirements routes
         Route::resource('sport-requirements', SportRequirementController::class);
         Route::patch('sport-requirements/{sportRequirement}/toggle', [SportRequirementController::class, 'toggle'])->name('sport-requirements.toggle');
+
+        // Coach Session Schedule routes
+        Route::get('/session-schedules', [SessionScheduleController::class, 'coachIndex'])->name('session-schedules.index');
+        Route::get('/session-schedules/create', [SessionScheduleController::class, 'coachCreate'])->name('session-schedules.create');
+        Route::post('/session-schedules', [SessionScheduleController::class, 'coachStore'])->name('session-schedules.store');
+        Route::get('/session-schedules/{sessionSchedule}', [SessionScheduleController::class, 'coachShow'])->name('session-schedules.show');
+        Route::get('/session-schedules/{sessionSchedule}/edit', [SessionScheduleController::class, 'coachEdit'])->name('session-schedules.edit');
+        Route::put('/session-schedules/{sessionSchedule}', [SessionScheduleController::class, 'coachUpdate'])->name('session-schedules.update');
+        Route::delete('/session-schedules/{sessionSchedule}', [SessionScheduleController::class, 'coachDestroy'])->name('session-schedules.destroy');
     });
 });
 

@@ -4,8 +4,8 @@
     Report Activity
 @endsection
 
-@section('body')
-<div class="content-wrapper" style="margin-top: -10px;">
+@section('content')
+<div class="content">
     <style>
         .report-container {
             padding: 1.5rem;

@@ -4,8 +4,8 @@
     Training Schedule
 @endsection
 
-@section('body')
-<div class="content-wrapper" style="margin-top: -10px;">
+@section('content')
+<div class="content">
     <style>
         .schedule-container {
             padding: 1.5rem;
