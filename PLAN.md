@@ -1,58 +1,42 @@
-# Footer CRUD Implementation Plan
+# Project Plan: Create Dockerfile for Laravel Application
 
-## Information Gathered
+## Information Gathered:
 
-- The project uses WelcomeContent model with section/key/value pattern
-- WelcomeContentController already has full CRUD (index, edit, update, store, destroy)
-- Footer section currently has basic fields in seeder: brand_name, description, product_title, company_title, resources_title, legal_title, copyright
-- The welcome.blade.php displays hardcoded footer content instead of using database values
+- **Project Type**: Laravel 12 PHP Application
+- **PHP Version**: 8.2+
+- **Dependencies**: laravel/framework ^12.0, openai-php/client ^0.18.0
+- **Build Target**: Google Cloud Run (Region: europe-west4)
+- **Current State**: No Dockerfile exists, causing build failure
 
-## Plan
+## Plan:
 
-### Step 1: Update Database Seeder
+Create a production-ready Dockerfile optimized for Laravel deployment to Google Cloud Run.
 
-Add comprehensive footer content to WelcomeContentSeeder:
+### Dockerfile Details:
 
-- Product links (features, pricing, coaches, workouts, mobile app)
-- Company links (about us, careers, blog, press kit, partners)
-- Resources links (help center, video tutorials, community, success stories, api docs)
-- Legal links (privacy policy, terms of service, cookie policy, disclaimer, contact)
-- Social media links (facebook, twitter, instagram, linkedin)
+1. **Base Image**: PHP 8.2 with Apache (official PHP image)
+2. **Multi-stage Build**: Build stage + Production stage
+3. **Key Components**:
+    - Install required PHP extensions (pdo, pdo_mysql, mbstring, xml, curl, etc.)
+    - Install Composer
+    - Copy application files
+    - Configure Apache for Laravel
+    - Set proper permissions
+    - Build production assets (npm)
 
-### Step 2: Update Admin Edit View
+### Files to Create:
 
-Modify resources/views/admin/welcome-content/edit.blade.php:
+1. `Dockerfile` - Main Docker configuration
+2. `.dockerignore` - Files to exclude from Docker build
 
-- Add footer link fields for each column
-- Add social media link fields
-- Group links properly for better UX
+### Implementation Steps:
 
-### Step 3: Update Welcome Page View
+1. Create `.dockerignore` file
+2. Create `Dockerfile` with multi-stage build
+3. Create `docker-compose.yml` for local development (optional but helpful)
 
-Modify resources/views/welcome.blade.php:
+## Follow-up Steps:
 
-- Update footer section to use dynamic data from $welcomeData
-- Make footer links dynamic
-- Make social media links dynamic
-- Display footer content from database
-
-### Step 4: Run Migrations/Seeders
-
-Run the seeder to populate footer data:
-
-```
-php artisan db:seed --class=WelcomeContentSeeder
-```
-
-## Dependent Files to Edit
-
-1. database/seeders/WelcomeContentSeeder.php
-2. resources/views/admin/welcome-content/edit.blade.php
-3. resources/views/welcome.blade.php
-
-## Followup Steps
-
-1. Clear cache: php artisan cache:clear
-2. Clear config: php artisan config:clear
-3. View the welcome page to verify footer displays correctly
-4. Access admin panel to test editing footer content
+- Test Docker build locally
+- Configure Google Cloud Run deployment settings
+- Ensure environment variables are properly set in Cloud Run
