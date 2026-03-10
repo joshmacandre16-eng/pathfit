@@ -70,6 +70,9 @@ COPY --chown=www-data:www-data . .
 # Copy vendor from composer stage
 COPY --from=composer --chown=www-data:www-data /app/vendor ./vendor
 
+# Copy composer binary from composer stage
+COPY --from=composer:2.7.1 /usr/bin/composer /usr/bin/composer
+
 # Run composer dump-autoload and package:discover (use --no-scripts to avoid duplicate execution)
 # The artisan commands require the application files to be present
 RUN composer dump-autoload --optimize --no-interaction --no-dev --no-scripts && \
