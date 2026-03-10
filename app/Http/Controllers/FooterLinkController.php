@@ -80,8 +80,13 @@ class FooterLinkController extends Controller
 
     public function show($slug)
     {
-        $footerLink = FooterLink::where('slug', $slug)->firstOrFail();
-        return view('footer.show', compact('footerLink'));
+        try {
+            $footerLink = FooterLink::where('slug', $slug)->firstOrFail();
+            return view('footer.show', compact('footerLink'));
+        } catch (\Exception $e) {
+            // If not found or DB error, redirect to home
+            return redirect('/');
+        }
     }
 }
 

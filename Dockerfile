@@ -82,10 +82,18 @@ RUN mkdir -p storage/framework/{cache,sessions,views} \
 # Generate application key
 RUN php artisan key:generate --force
 
+# Run database migrations (ignore errors if DB is not ready)
+RUN php artisan migrate --force || true
+
 # Build npm assets for production
 RUN if [ -f "package.json" ]; then \
     npm run build; \
     fi
+
+# Create a simple health check script
+RUN echo '#!/bin/bash' > /usr/local/bin/healthcheck \
+    && echo 'php artisan tinker --execute="echo 1" > /dev/null 2>&1 && exit 0 || exit 1' >> /usr/local/bin/healthcheck \
+    && chmod +x /usr/local/bin/healthcheck
 
 # Expose port (Cloud Run provides $PORT)
 EXPOSE 8080
