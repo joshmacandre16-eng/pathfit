@@ -1,18 +1,19 @@
 # ============================================
 # Stage 1: Install PHP dependencies
 # ============================================
-FROM composer:2.7 AS composer
+FROM composer:2.7.1 AS composer
 
 WORKDIR /app
 
 # Copy composer files first for better caching
 COPY composer.json composer.lock ./
-RUN composer install --no-dev --no-interaction --optimize-autoloader
+# Use --no-scripts to avoid running post-autoload-dump which requires artisan file
+RUN composer install --no-dev --no-interaction --optimize-autoloader --no-scripts
 
 # ============================================
 # Stage 2: Build NPM assets
 # ============================================
-FROM node:20-alpine AS node
+FROM node:20.14.0-alpine AS node
 
 WORKDIR /app
 
@@ -68,6 +69,11 @@ COPY --chown=www-data:www-data . .
 
 # Copy vendor from composer stage
 COPY --from=composer --chown=www-data:www-data /app/vendor ./vendor
+
+# Run composer dump-autoload and package:discover (use --no-scripts to avoid duplicate execution)
+# The artisan commands require the application files to be present
+RUN composer dump-autoload --optimize --no-interaction --no-dev --no-scripts && \
+    php artisan package:discover --ansi
 
 # Copy node_modules from node stage (for build artifacts)
 COPY --from=node /app/node_modules ./node_modules
