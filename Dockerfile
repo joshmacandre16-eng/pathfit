@@ -76,7 +76,7 @@ COPY --from=composer:2.7.1 /usr/bin/composer /usr/bin/composer
 # Run composer dump-autoload and package:discover (use --no-scripts to avoid duplicate execution)
 # The artisan commands require the application files to be present
 RUN composer dump-autoload --optimize --no-interaction --no-dev --no-scripts && \
-    php artisan package:discover --ansi
+    php artisan package:discover
 
 # Copy node_modules from node stage (for build artifacts)
 COPY --from=node /app/node_modules ./node_modules
@@ -88,8 +88,10 @@ RUN mkdir -p storage/framework/{cache,sessions,views} \
     && chmod -R 775 bootstrap/cache \
     && chown -R www-data:www-data /var/www/html
 
-# Generate application key
-RUN php artisan key:generate --force
+# Generate application key from template (safe for production builds)
+RUN cp .env.example .env && \
+    php artisan key:generate --force && \
+    rm .env
 
 # Run database migrations (ignore errors if DB is not ready)
 RUN php artisan migrate --force || true
