@@ -3,38 +3,44 @@
 # ============================================
 FROM composer:2.7.1 AS composer
 
+ENV COMPOSER_ALLOW_SUPERUSER=1 \
+    COMPOSER_NO_INTERACTION=1
+
 WORKDIR /app
 
-# Copy composer files first for better caching
-COPY composer.json composer.lock ./
-# Use --no-scripts to avoid running post-autoload-dump which requires artisan file
-RUN composer install --no-dev --no-interaction --optimize-autoloader --no-scripts
+# Create non-root user
+RUN useradd -m -u 1000 appuser
+
+COPY --chown=appuser:appuser composer.json composer.lock ./
+
+USER appuser
+RUN composer install --no-dev --optimize-autoloader --no-interaction
 
 # ============================================
-# Stage 2: Build NPM assets
+# Stage 2: Build Node dependencies
 # ============================================
 FROM node:20.14.0-alpine AS node
 
 WORKDIR /app
 
-# Copy package files
 COPY package.json package-lock.json ./
-RUN npm ci --production
+RUN npm ci --omit=dev
 
 # ============================================
-# Stage 3: Production build
+# Stage 3: Production image
 # ============================================
 FROM php:8.2-apache-bookworm AS production
 
-# Set environment variables
-ENV APP_NAME=pathfit \
+ENV COMPOSER_ALLOW_SUPERUSER=1 \
+    COMPOSER_NO_INTERACTION=1 \
+    COMPOSER_MEMORY_LIMIT=-1 \
     APP_ENV=production \
     APP_DEBUG=false \
     LOG_CHANNEL=stderr \
     NODE_ENV=production \
     PORT=8080
 
-# Install system dependencies and PHP extensions
+# Install system dependencies
 RUN apt-get update && apt-get install -y \
     libzip-dev \
     zip \
@@ -48,69 +54,52 @@ RUN apt-get update && apt-get install -y \
     && docker-php-ext-configure gd --with-freetype --with-jpeg \
     && docker-php-ext-install pdo pdo_mysql zip gd
 
-# Enable Apache required modules
+# Enable Apache modules
 RUN a2enmod rewrite headers
 
-# Configure Apache
+# Configure Apache document root
 ENV APACHE_DOCUMENT_ROOT=/var/www/html/public
 
-# Copy Apache configuration
-RUN sed -ri \
-    -e 's|/var/www/html|${APACHE_DOCUMENT_ROOT}|g' \
-    /etc/apache2/sites-available/000-default.conf \
-    && sed -ri \
-    -e 's|/var/www/html|${APACHE_DOCUMENT_ROOT}|g' \
+RUN sed -ri -e 's|/var/www/html|${APACHE_DOCUMENT_ROOT}|g' \
+    /etc/apache2/sites-available/000-default.conf && \
+    sed -ri -e 's|/var/www/html|${APACHE_DOCUMENT_ROOT}|g' \
     /etc/apache2/apache2.conf
 
 WORKDIR /var/www/html
 
-# Copy application files
+# Copy application
 COPY --chown=www-data:www-data . .
 
-# Copy vendor from composer stage
+# Copy vendor dependencies
 COPY --from=composer --chown=www-data:www-data /app/vendor ./vendor
 
-# Copy composer binary from composer stage
-COPY --from=composer:2.7.1 /usr/bin/composer /usr/bin/composer
-
-# Run composer dump-autoload and package:discover (use --no-scripts to avoid duplicate execution)
-# The artisan commands require the application files to be present
-RUN composer dump-autoload --optimize --no-interaction --no-dev --no-scripts && \
-    php artisan package:discover
-
-# Copy node_modules from node stage (for build artifacts)
+# Copy node_modules
 COPY --from=node /app/node_modules ./node_modules
 
-# Create storage directories
+# Copy composer binary
+COPY --from=composer:2.7.1 /usr/bin/composer /usr/bin/composer
+
+# Set permissions
 RUN mkdir -p storage/framework/{cache,sessions,views} \
-    && mkdir -p storage/logs \
-    && chmod -R 775 storage \
-    && chmod -R 775 bootstrap/cache \
-    && chown -R www-data:www-data /var/www/html
+    storage/logs \
+    bootstrap/cache \
+    && chown -R www-data:www-data /var/www/html \
+    && chmod -R 775 storage bootstrap/cache
 
-# Generate application key from template (safe for production builds)
-RUN cp .env.example .env && \
-    php artisan key:generate --force && \
-    rm .env
+# Run Laravel optimizations
+USER www-data
+RUN composer dump-autoload --optimize --no-dev && \
+    php artisan package:discover --ansi || true
+USER root
 
-# Run database migrations (ignore errors if DB is not ready)
-RUN php artisan migrate --force || true
-
-# Build npm assets for production
-RUN echo "Frontend assets pre-built in node stage and node_modules copied successfully."
-
-# Create a simple health check script
+# Healthcheck
 RUN echo '#!/bin/bash' > /usr/local/bin/healthcheck \
-    && echo 'php artisan tinker --execute="echo 1" > /dev/null 2>&1 && exit 0 || exit 1' >> /usr/local/bin/healthcheck \
+    && echo 'curl -f http://localhost:8080/ || exit 1' >> /usr/local/bin/healthcheck \
     && chmod +x /usr/local/bin/healthcheck
 
-# Expose port (Cloud Run provides $PORT)
 EXPOSE 8080
 
-# Health check
 HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
-    CMD curl -f http://localhost:8080/ || exit 1
+    CMD /usr/local/bin/healthcheck
 
-# Start Apache
 CMD ["apache2-foreground"]
-

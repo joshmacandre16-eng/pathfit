@@ -57,3 +57,48 @@ If you discover a security vulnerability within Laravel, please send an e-mail t
 ## License
 
 The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+
+## Pathfit Quick Start (Fixes PHP/PowerShell Issues)
+
+### 1. Docker (Production-Ready, Recommended)
+
+This project is Dockerized with PHP 8.2 Apache.
+
+```bash
+docker-compose up -d --build
+```
+
+- App runs at **http://localhost:8080**
+- Logs: `docker-compose logs -f app`
+- Artisan inside: `docker-compose exec app php artisan package:discover`
+- Migrations inside: `docker-compose exec app php artisan migrate --force`
+- Stop: `docker-compose down`
+
+**DB Config:** Update `.env` or docker-compose env vars (DB_HOST=10.142.0.4 DB_DATABASE=pathfit DB_USERNAME=root).
+
+### 2. Local XAMPP/PowerShell
+
+PHP at `C:\xampp1\php` (not in PATH).
+
+**Fix 1: Use scripts**
+
+```powershell
+./run-artisan.ps1 package:discover
+./run-migrate.ps1  # migrate --force, ignores errors
+```
+
+**Fix 2: Permanent PHP PATH**
+
+- Win+R > `sysdm.cpl` > Advanced > Environment Variables > System PATH > Add `C:\xampp1\php` > Restart VSCode/PowerShell.
+- Then `php artisan ...` works directly.
+
+**Start Server:** `./run-artisan.ps1 serve` or `php artisan serve` (after PATH).
+
+### 3. Migrate Fix
+
+Never `RUN php artisan...` in PowerShell (Docker syntax). Use above scripts/Docker exec.
+
+### Notes
+
+- XAMPP MySQL: Set `.env` DB_HOST=127.0.0.1 DB_PORT=3306.
+- Vendor: `composer install` (if local).

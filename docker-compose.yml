@@ -7,6 +7,7 @@ services:
       dockerfile: Dockerfile
     ports:
       - "8080:8080"
+    user: "33:33"
     environment:
       - APP_ENV=production
       - APP_DEBUG=false
