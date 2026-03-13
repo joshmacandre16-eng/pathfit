@@ -97,9 +97,7 @@ RUN cp .env.example .env && \
 RUN php artisan migrate --force || true
 
 # Build npm assets for production
-RUN if [ -f "package.json" ]; then \
-    npm run build; \
-    fi
+RUN echo "Frontend assets pre-built in node stage and node_modules copied successfully."
 
 # Create a simple health check script
 RUN echo '#!/bin/bash' > /usr/local/bin/healthcheck \
