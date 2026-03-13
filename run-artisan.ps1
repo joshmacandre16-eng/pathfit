@@ -11,6 +11,8 @@ if (-not (Test-Path "$phpPath\php.exe")) {
 $env:Path = "$phpPath;$env:Path"
 
 # Run artisan with the given arguments (or default to 'serve')
+# Correct usage: ./run-artisan.ps1 package:discover  (script passes args directly to php artisan)
+# For migrate: ./run-migrate.ps1
 $arguments = $args
 if ($arguments.Count -eq 0) {
     $arguments = @('serve')
