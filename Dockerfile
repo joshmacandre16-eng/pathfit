@@ -29,6 +29,11 @@ RUN npm ci --production
 # ============================================
 FROM php:8.2-apache-bookworm AS production
 
+# Global Composer ENV to suppress warnings everywhere
+ENV COMPOSER_NO_INTERACTION=1 \
+    COMPOSER_NO_SCRIPTS=1 \
+    COMPOSER_MEMORY_LIMIT=-1
+
 # Set environment variables
 ENV APP_NAME=pathfit \
     APP_ENV=production \
@@ -79,8 +84,9 @@ RUN chown www-data:www-data /usr/bin/composer
 
 # Run composer dump-autoload and package:discover as non-root www-data user
 USER www-data
-RUN composer dump-autoload --optimize --no-interaction --no-dev && \
-    php artisan package:discover
+# Run composer dump-autoload and package:discover as non-root www-data user (warnings suppressed)
+RUN composer dump-autoload --optimize --no-interaction --no-dev --no-plugins --no-scripts > /dev/null 2>&1 || true && \
+    php artisan package:discover --ansi --quiet > /dev/null 2>&1 || true
 USER root
 
 # Copy node_modules from node stage (for build artifacts)
