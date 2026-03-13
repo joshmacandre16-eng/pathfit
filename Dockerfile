@@ -5,10 +5,13 @@ FROM composer:2.7.1 AS composer
 
 WORKDIR /app
 
-# Copy composer files first for better caching
-COPY composer.json composer.lock ./
-# Use --no-scripts to avoid running post-autoload-dump which requires artisan file
-RUN composer install --no-dev --no-interaction --optimize-autoloader --no-scripts
+# Create non-root user to avoid superuser warnings
+RUN useradd -m -u 1000 appuser
+COPY --chown=appuser:appuser composer.json composer.lock ./
+
+# Switch to non-root user for composer install
+USER appuser
+RUN composer install --no-dev --no-interaction --optimize-autoloader
 
 # ============================================
 # Stage 2: Build NPM assets
@@ -72,11 +75,13 @@ COPY --from=composer --chown=www-data:www-data /app/vendor ./vendor
 
 # Copy composer binary from composer stage
 COPY --from=composer:2.7.1 /usr/bin/composer /usr/bin/composer
+RUN chown www-data:www-data /usr/bin/composer
 
-# Run composer dump-autoload and package:discover (use --no-scripts to avoid duplicate execution)
-# The artisan commands require the application files to be present
-RUN composer dump-autoload --optimize --no-interaction --no-dev --no-scripts && \
+# Run composer dump-autoload and package:discover as non-root www-data user
+USER www-data
+RUN composer dump-autoload --optimize --no-interaction --no-dev && \
     php artisan package:discover
+USER root
 
 # Copy node_modules from node stage (for build artifacts)
 COPY --from=node /app/node_modules ./node_modules
