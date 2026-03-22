@@ -1119,10 +1119,7 @@
                 </div>
             </a>
 
-            <div class="header-search">
-                <i class="fas fa-search"></i>
-                <input type="text" placeholder="Search...">
-            </div>
+
 
             <div class="header-actions">
                 <!-- Notifications -->
@@ -1137,18 +1134,13 @@
                     <button class="dark-toggle" id="darkToggle" title="Toggle dark mode"></button>
                 </div>
 
-                <!-- User Dropdown Menu -->
-                <div class="user-dropdown" id="userDropdown">
-                   
-                   <form method="POST" action="{{ route('logout') }}">
-                            @csrf
-                            <button type="submit" class="dropdown-item" style="width: 100%; text-align: left; border: none; background: none; cursor: pointer;">
-                                <i class="fas fa-sign-out-alt"></i>
-                                <span>Logout</span>
-                            </button>
-                        </form> </div>
-                
-
+                                       <form method="POST" action="{{ route('logout.post') }}" class="logout-form">
+                @csrf
+                <button type="submit" class="nav-link" style="border: none; background: none; width: 100%; text-align: left;">
+                    <i class="nav-icon fas fa-sign-out-alt"></i>
+                    <p>Logout</p>
+                </button>
+            </form>
             </div>
         </header>
 
@@ -1191,13 +1183,15 @@
 
                 <!-- Sidebar Footer -->
                 <div class="sidebar-footer">
-                    <form method="POST" action="{{ route('logout') }}">
+                    @auth
+                    <form method="POST" action="{{ route('logout.post') }}" class="logout-form">
                         @csrf
                         <button type="submit" class="logout-btn">
                             <i class="fas fa-sign-out-alt"></i>
-                            <span>Sign Out</span>
+                            <span>Logout</span>
                         </button>
                     </form>
+                    @endauth
                 </div>
             </aside>
 

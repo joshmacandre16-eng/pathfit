@@ -46,9 +46,9 @@
             --green: #198754;
             --red: #dc3545;
             --amber: #ffc107;
-            --purple: #7c3aed;
+--purple: #7c3aed;
             --header-h: 60px;
-            --sidebar-w: 260px;
+            --sidebar-w: clamp(200px, 22vw, 280px);
             --shadow-sm: 0 1px 3px rgba(0,0,0,0.08);
             --shadow-md: 0 4px 12px rgba(0,0,0,0.1);
             --shadow-lg: 0 8px 24px rgba(0,0,0,0.12);
@@ -806,19 +806,63 @@
             border-radius: 10px;
         }
 
+        /* Android optimizations (max-width: 420px - small phones like Pixel 5, Galaxy A series) */
+        @media (max-width: 420px) {
+            :root {
+                --sidebar-w: 240px;
+            }
+            
+            .hamburger {
+                width: 44px;
+                height: 44px;
+                padding: 12px;
+            }
+            
+            .nav-link {
+                padding: 10px 12px !important;
+                font-size: 13px;
+            }
+            
+            .nav-link i {
+                width: 18px;
+                font-size: 15px;
+            }
+            
+            .sidebar-brand {
+                padding: 16px;
+                gap: 8px;
+            }
+            
+            .sidebar-user-panel {
+                padding: 12px 16px;
+            }
+            
+            .sidebar-user-name {
+                font-size: 13px;
+            }
+            
+            .nav-header {
+                padding: 12px 16px 6px;
+                font-size: 9px;
+            }
+        }
+
         @media (max-width: 1200px) {
             .header-search {
                 width: 220px;
             }
         }
 
-        @media (max-width: 992px) {
-            :root {
-                --sidebar-w: 260px;
-            }
-
+@media (max-width: 768px) {
             .hamburger {
                 display: flex;
+            }
+
+            /* Android sizes (320-420px): Hamburger always available */
+            @media (max-width: 420px) {
+                :root {
+                    --sidebar-w: 260px;
+                }
             }
 
             .header-search {
@@ -849,6 +893,48 @@
 
             .user-info {
                 display: none;
+            }
+        }
+
+        /* Always show sidebar + compact mode for 300-420px */
+        @media (min-width: 301px) and (max-width: 420px) {
+            :root {
+                --sidebar-w: 220px;
+            }
+
+            .nav-link {
+                padding: 8px 12px !important;
+                font-size: 13px;
+            }
+
+            .nav-link i {
+                width: 16px;
+                font-size: 14px;
+            }
+
+            .sidebar-brand {
+                padding: 12px;
+                gap: 8px;
+            }
+
+            .sidebar-brand-text {
+                font-size: 14px;
+            }
+
+            .sidebar-user-panel {
+                padding: 12px 16px;
+            }
+
+            .nav-header {
+                padding: 12px 16px 4px;
+                font-size: 9px;
+            }
+        }
+
+        /* Ensure content wrapper always respects sidebar */
+        @media (min-width: 301px) {
+            .content-wrapper {
+                margin-left: var(--sidebar-w);
             }
         }
 
@@ -887,17 +973,21 @@
     <div class="wrapper">
         <div class="sidebar-overlay" id="sidebarOverlay"></div>
 
-        <header class="main-header">
-            <button class="hamburger" id="hamburger" aria-label="Toggle menu">
+<header class="main-header">
+            <button class="hamburger" id="hamburger" aria-label="Toggle menu" style="touch-action: manipulation;">
                 <span></span><span></span><span></span>
             </button>
 
+            <a href="{{ route('coach.dashboard') }}" class="header-brand">
+                <div class="header-brand-icon">
+                    <i class="fas fa-running"></i>
+                </div>
+                <div class="header-brand-text">
+                    Path<span>Fit</span>
+                </div>
+            </a>
 
 
-            <div class="header-search">
-                <i class="fas fa-search"></i>
-                <input type="text" placeholder="Search...">
-            </div>
 
             <div class="header-actions">
                 <button class="icon-btn notif-btn" title="Notifications">
@@ -910,14 +1000,13 @@
                     <button class="dark-toggle" id="darkToggle" title="Toggle dark mode"></button>
                 </div>
 
-                <div class="user-dropdown" id="userDropdown">
-                     <form method="POST" action="{{ route('logout') }}">
-                            @csrf
-                            <button type="submit" class="dropdown-item" style="width: 100%; text-align: left; border: none; background: none; cursor: pointer;">
-                                <i class="fas fa-sign-out-alt"></i>
-                                <span>Logout</span>
-                            </button>
-                        </form> </div>
+                             <form method="POST" action="{{ route('logout.post') }}" class="logout-form">
+                @csrf
+                <button type="submit" class="nav-link" style="border: none; background: none; width: 100%; text-align: left;">
+                    <i class="nav-icon fas fa-sign-out-alt"></i>
+                    <p>Logout</p>
+                </button>
+            </form>
             </div>
         </header>
 
@@ -953,16 +1042,8 @@
                 <nav class="sidebar-nav">
                     @include('menu.sidebarcoach')
                 </nav>
-                                <!-- Sidebar Footer -->
-                <div class="sidebar-footer">
-                    <form method="POST" action="{{ route('logout') }}">
-                        @csrf
-                        <button type="submit" class="logout-btn">
-                            <i class="fas fa-sign-out-alt"></i>
-                            <span>Sign Out</span>
-                        </button>
-                    </form>
-                </div>
+                                
+
             </aside>
 
             <main class="content-wrapper">
@@ -998,8 +1079,10 @@
     <script src="{{ asset('templates/plugins/datatables-buttons/js/buttons.print.min.js') }}"></script>
     <script src="{{ asset('templates/plugins/datatables-buttons/js/buttons.colVis.min.js') }}"></script>
 
+    @{!! "
     <script>
         @if(Session::has('error'))
+" !!}
         toastr.options = {
             closeButton: true,
             progressBar: true,
@@ -1079,6 +1162,7 @@
             if(overlay) overlay.classList.remove('open');
             if(hamburger) hamburger.classList.remove('active');
             document.body.style.overflow = '';
+            document.documentElement.style.overflow = '';
         }
 
         if(hamburger) {
