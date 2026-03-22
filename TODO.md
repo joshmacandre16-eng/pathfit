@@ -1,12 +1,10 @@
-# Docker Build Fix TODO - COMPLETED ✅
+# Fix Laravel Route Cache Error for Railway Deployment
 
-Dockerfile updated with `apk add --no-cache shadow && useradd -m -u 1000 appuser` in composer stage.
+## Steps:
 
-**Next Steps (run in your terminal with Docker installed):**
-
-1. docker compose build --no-cache
-2. docker compose logs app (check no errors)
-3. docker compose up -d
-4. Visit http://localhost:8080
-
-Task complete: Build failure fixed.
+- [x] **Step 1:** Edit `routes/web.php` to rename custom logout route from `name('logout')` to `name('logout.get')` to resolve duplicate name conflict. ✅
+- [x] **Step 2:** Test locally with `php artisan route:cache` to verify success (no LogicException). ✅
+- [x] **Step 3:** Verify routes with `php artisan route:list | grep logout` - expect two unique names. ✅
+- [x] **Step 4:** Update TODO.md with completion status. ✅
+- [ ] **Step 5:** Redeploy to Railway (user action) and confirm build succeeds.
+- [ ] **Step 6:** Test logout functionality in production (GET /logout and POST /logout).
