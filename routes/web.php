@@ -18,6 +18,7 @@ use App\Http\Controllers\WelcomeContentController;
 use App\Http\Controllers\WelcomeController;
 use App\Http\Controllers\FooterLinkController;
 use App\Http\Controllers\PrivacyController;
+use App\Http\Controllers\Auth\AuthenticatedSessionController;
 
 Route::get('/', [WelcomeController::class, 'index']);
 
@@ -34,7 +35,7 @@ Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');
 Route::post('/login', [LoginController::class, 'login'])->name('login.post');
 Route::get('/register', [RegisterController::class, 'registerread'])->name('register');
 Route::post('/register', [RegisterController::class, 'register'])->name('register.post');
-Route::get('/logout', [LoginController::class, 'logout'])->name('logout.get');
+
 
 // Protected routes
 Route::middleware(['auth', 'login_auth'])->group(function () {
