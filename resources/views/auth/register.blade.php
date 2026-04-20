@@ -534,7 +534,7 @@
   </div>
   @endif
 
-  <form method="POST" action="{{ route('register.post') }}">
+  <form method="POST" action="{{ route('register') }}">
     @csrf
 
     <div class="name-row" style="margin-bottom: 20px; animation: fadeDown .6s .3s ease both;">
