@@ -2,18 +2,38 @@
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
     /**
+     * The name of the old broken migration whose entry must be removed from
+     * the migrations table so that Laravel does not believe it already ran.
+     */
+    private const BROKEN_MIGRATION = '2026_01_11_051808_add_comprehensive_athlete_fields_to_users_table';
+
+    /**
      * Ensure all columns referenced in the User model's $fillable array exist
      * on the users table. Each column is guarded with hasColumn() so this
      * migration is safe to run even when some columns were already created by
      * earlier migrations.
+     *
+     * We also remove the stale migrations-table entry for the old broken
+     * migration (2026_01_11_051808_add_comprehensive_athlete_fields_to_users_table)
+     * which failed mid-execution in MySQL but was still recorded as "ran" by
+     * Laravel, leaving the columns it was supposed to create absent from the
+     * database.
      */
     public function up(): void
     {
+        // Remove the ghost record so the broken migration is no longer
+        // considered "ran".  This is safe to call repeatedly; if the record
+        // does not exist the DELETE is simply a no-op.
+        DB::table('migrations')
+            ->where('migration', self::BROKEN_MIGRATION)
+            ->delete();
+
         Schema::table('users', function (Blueprint $table) {
             // ── Personal info ────────────────────────────────────────────────
             if (!Schema::hasColumn('users', 'fname')) {
