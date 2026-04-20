@@ -283,9 +283,53 @@
   }
 
   .form-group:nth-child(1) { animation-delay: .3s; }
-  .form-group:nth-child(2) { animation-delay: .35s; }
-  .form-group:nth-child(3) { animation-delay: .4s; }
-  .form-group:nth-child(4) { animation-delay: .45s; }
+  .form-group:nth-child(2) { animation-delay: .33s; }
+  .form-group:nth-child(3) { animation-delay: .36s; }
+  .form-group:nth-child(4) { animation-delay: .39s; }
+  .form-group:nth-child(5) { animation-delay: .42s; }
+  .form-group:nth-child(6) { animation-delay: .45s; }
+  .form-group:nth-child(7) { animation-delay: .48s; }
+  .form-group:nth-child(8) { animation-delay: .51s; }
+
+  .name-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 12px;
+  }
+
+  .name-row .form-group {
+    margin-bottom: 0;
+  }
+
+  select {
+    width: 100%;
+    background: var(--card);
+    border: 1px solid rgba(255,255,255,.07);
+    border-radius: 10px;
+    padding: 14px 18px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 15px;
+    color: var(--text);
+    outline: none;
+    transition: border-color .2s, box-shadow .2s;
+    appearance: none;
+    -webkit-appearance: none;
+    cursor: pointer;
+  }
+
+  select:focus {
+    border-color: rgba(200,241,53,.4);
+    box-shadow: 0 0 0 3px rgba(200,241,53,.06);
+  }
+
+  select option {
+    background: var(--card);
+    color: var(--text);
+  }
+
+  select.placeholder-selected {
+    color: var(--muted);
+  }
 
   label {
     display: block;
@@ -490,21 +534,90 @@
   </div>
   @endif
 
-  <form method="POST" action="{{ route('register') }}">
+  <form method="POST" action="{{ route('register.post') }}">
     @csrf
 
+    <div class="name-row" style="margin-bottom: 20px; animation: fadeDown .6s .3s ease both;">
+      <div class="form-group">
+        <label for="fname">First Name</label>
+        <div class="input-wrap">
+          <input type="text" id="fname" name="fname" placeholder="John" value="{{ old('fname') }}" required>
+          <span class="input-icon">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+              <circle cx="12" cy="7" r="4"/>
+            </svg>
+          </span>
+        </div>
+        @error('fname')
+        <div class="error-message">{{ $message }}</div>
+        @enderror
+      </div>
+
+      <div class="form-group">
+        <label for="mname">Middle Name</label>
+        <div class="input-wrap">
+          <input type="text" id="mname" name="mname" placeholder="(Optional)" value="{{ old('mname') }}">
+          <span class="input-icon">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+              <circle cx="12" cy="7" r="4"/>
+            </svg>
+          </span>
+        </div>
+        @error('mname')
+        <div class="error-message">{{ $message }}</div>
+        @enderror
+      </div>
+
+      <div class="form-group">
+        <label for="lname">Last Name</label>
+        <div class="input-wrap">
+          <input type="text" id="lname" name="lname" placeholder="Doe" value="{{ old('lname') }}" required>
+          <span class="input-icon">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+              <circle cx="12" cy="7" r="4"/>
+            </svg>
+          </span>
+        </div>
+        @error('lname')
+        <div class="error-message">{{ $message }}</div>
+        @enderror
+      </div>
+    </div>
+
     <div class="form-group">
-      <label for="name">Full Name</label>
+      <label for="course">Course</label>
       <div class="input-wrap">
-        <input type="text" id="name" name="name" placeholder="John Doe" value="{{ old('name') }}" required>
+        <input type="text" id="course" name="course" placeholder="e.g. BS Physical Education" value="{{ old('course') }}" required>
         <span class="input-icon">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
-            <circle cx="12" cy="7" r="4"/>
+            <path d="M22 10v6M2 10l10-5 10 5-10 5z"/>
+            <path d="M6 12v5c3 3 9 3 12 0v-5"/>
           </svg>
         </span>
       </div>
-      @error('name')
+      @error('course')
+      <div class="error-message">{{ $message }}</div>
+      @enderror
+    </div>
+
+    <div class="form-group">
+      <label for="gender">Gender</label>
+      <div class="input-wrap">
+        <select id="gender" name="gender" required class="{{ old('gender') ? '' : 'placeholder-selected' }}" onchange="this.classList.toggle('placeholder-selected', !this.value)">
+          <option value="" disabled {{ old('gender') ? '' : 'selected' }}>Select gender</option>
+          <option value="male" {{ old('gender') === 'male' ? 'selected' : '' }}>Male</option>
+          <option value="female" {{ old('gender') === 'female' ? 'selected' : '' }}>Female</option>
+        </select>
+        <span class="input-icon" style="pointer-events:none;">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="6 9 12 15 18 9"/>
+          </svg>
+        </span>
+      </div>
+      @error('gender')
       <div class="error-message">{{ $message }}</div>
       @enderror
     </div>
