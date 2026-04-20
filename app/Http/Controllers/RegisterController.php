@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Log;
 
 class RegisterController extends Controller
 {
@@ -53,9 +54,10 @@ class RegisterController extends Controller
             // Return to register form with success message
             return redirect()->route('register')->with('success', 'Registration successful! Please login to continue.');
         } catch (\Exception $e) {
+            Log::error('Registration error: ' . $e->getMessage(), ['exception' => $e]);
             return redirect()->back()
                 ->withInput()
-                ->with('failed', 'Registration failed. Please try again.');
+                ->with('failed', 'Registration failed: ' . $e->getMessage());
         }
     }
 
