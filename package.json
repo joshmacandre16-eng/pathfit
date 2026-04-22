@@ -4,7 +4,8 @@
     "type": "module",
     "scripts": {
         "build": "vite build",
-        "dev": "vite"
+        "dev": "vite",
+        "start": "node index.js"
     },
     "devDependencies": {
         "@tailwindcss/forms": "^0.5.2",
@@ -21,7 +22,4 @@
     "dependencies": {
         "chart.js": "^4.5.1"
     }
-    "scripts": {
-  "start": "node index.js"
-}
 }
