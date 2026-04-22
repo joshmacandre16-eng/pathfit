@@ -964,11 +964,7 @@
                 el.style.opacity = '0'; el.style.transform = 'translateY(30px)'; el.style.transition = 'all 0.6s ease-out';
                 observer.observe(el);
             });
-            // inject mobile CTAs into navLinks for better mobile UX (preserves original functionality)
-            const mobileCtaDiv = document.createElement('div');
-            mobileCtaDiv.className = 'mobile-cta-wrapper';
-            mobileCtaDiv.innerHTML = `<a href="{{ route('login')}}" class="btn-mobile-login">Log in</a><a href="{{ route('login')}}" class="btn-mobile-signup">Get Started</a>`;
-            document.getElementById('navLinks').appendChild(mobileCtaDiv);
+            
         });
     </script>
 </body>
