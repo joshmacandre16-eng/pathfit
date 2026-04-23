@@ -46,6 +46,18 @@
                                 </div>
                             @endif
 
+                            {{-- Profile Image --}}
+                            <div class="row mb-4">
+                                <div class="col-md-12 text-center">
+                                    @if($user->photo)
+                                        <img src="{{ asset('storage/' . $user->photo) }}" alt="Profile Photo" class="img-fluid rounded-circle" style="width: 150px; height: 150px; object-fit: cover; border: 4px solid #007bff;">
+                                    @else
+                                        <img src="{{ asset('images/default-avatar.png') }}" alt="Default Avatar" class="img-fluid rounded-circle" style="width: 150px; height: 150px; object-fit: cover; border: 4px solid #dee2e6;">
+                                    @endif
+                                    <h5 class="mt-3 mb-0">{{ $user->fname ?? '' }} {{ $user->lname ?? $user->name ?? 'User' }}</h5>
+                                </div>
+                            </div>
+
                             <div class="row">
                                 <div class="col-md-6">
                                     <div class="form-group">

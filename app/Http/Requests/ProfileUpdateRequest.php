@@ -79,6 +79,8 @@ class ProfileUpdateRequest extends FormRequest
             'records_held' => ['nullable', 'string'],
             'notable_performances' => ['nullable', 'string'],
             'photo' => ['nullable', 'image', 'mimes:jpeg,png,jpg', 'max:2048'],
+            'current_password' => ['nullable', 'current_password'],
+            'password' => ['nullable', 'confirmed', 'min:8', 'string'],
         ];
     }
 }

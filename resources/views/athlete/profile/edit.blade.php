@@ -880,6 +880,61 @@
                             </div>
                         </div>
 
+                        </div>
+
+                        <div class="card card-danger">
+                            <div class="card-header">
+                                <h3 class="card-title">
+                                    <i class="fas fa-lock mr-2"></i>Account Security
+                                </h3>
+                            </div>
+                            <div class="card-body">
+                                <p class="text-muted mb-4">Leave these fields blank if you do not want to change your password.</p>
+                                
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label for="current_password">
+                                                <i class="fas fa-key mr-1"></i>Current Password
+                                            </label>
+                                            <input type="password" class="form-control @error('current_password') is-invalid @enderror" id="current_password" name="current_password" placeholder="Enter current password">
+                                            @error('current_password')
+                                                <span class="invalid-feedback" role="alert">
+                                                    <strong>{{ $message }}</strong>
+                                                </span>
+                                            @enderror
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label for="password">
+                                                <i class="fas fa-lock mr-1"></i>New Password
+                                            </label>
+                                            <input type="password" class="form-control @error('password') is-invalid @enderror" id="password" name="password" placeholder="Enter new password (min 8 chars)" autocomplete="new-password">
+                                            @error('password')
+                                                <span class="invalid-feedback" role="alert">
+                                                    <strong>{{ $message }}</strong>
+                                                </span>
+                                            @enderror
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label for="password_confirmation">
+                                                <i class="fas fa-lock mr-1"></i>Confirm New Password
+                                            </label>
+                                            <input type="password" class="form-control @error('password_confirmation') is-invalid @enderror" id="password_confirmation" name="password_confirmation" placeholder="Confirm new password">
+                                            @error('password_confirmation')
+                                                <span class="invalid-feedback" role="alert">
+                                                    <strong>{{ $message }}</strong>
+                                                </span>
+                                            @enderror
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
                         <div class="card-footer">
                             <button type="submit" class="btn btn-primary">
                                 <i class="fas fa-save mr-1"></i>Update Profile
