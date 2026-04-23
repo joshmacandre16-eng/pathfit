@@ -883,6 +883,8 @@
                 </div>
             </a>
 
+
+
             <div class="header-actions">
                 <button class="icon-btn notif-btn" title="Notifications">
                     <i class="far fa-bell"></i>
@@ -893,6 +895,7 @@
                     <i class="fas fa-moon" style="font-size: 13px;"></i>
                     <button class="dark-toggle" id="darkToggle" title="Dark mode"></button>
                 </div>
+
 
                 <div class="user-dropdown" id="userDropdown">
                     <div class="user-dropdown-btn">
@@ -907,12 +910,12 @@
                         <i class="fas fa-chevron-down user-dropdown-arrow"></i>
                     </div>
                     <div class="dropdown-menu-custom">
-                        <a href="{{ route('athlete.profile.index') }}" class="dropdown-item-custom">
+                        <a href="{{ route('admin.profile.index') }}" class="dropdown-item-custom">
                             <i class="fas fa-user-circle"></i>
                             <span>My Profile</span>
                         </a>
                         <div class="dropdown-divider-custom"></div>
-                   <form method="POST" action="{{ route('logout') }}">
+                   <form method="POST" action="{{ route('logout.post') }}">
                         @csrf
                         <button type="submit" class="logout-btn">
                             <i class="fas fa-sign-out-alt"></i>
@@ -921,6 +924,9 @@
                     </form>
                     </div>
                 </div>
+
+                   
+
             </div>
         </header>
 
@@ -964,13 +970,15 @@
 
                 <!-- Sidebar Footer -->
                 <div class="sidebar-footer">
-                    <form method="POST" action="{{ route('logout') }}">
+                    @auth
+                    <form method="POST" action="{{ route('logout.post') }}" class="logout-form">
                         @csrf
                         <button type="submit" class="logout-btn">
                             <i class="fas fa-sign-out-alt"></i>
-                            <span>Sign Out</span>
+                            <span>Logout</span>
                         </button>
                     </form>
+                    @endauth
                 </div>
             </aside>
 
