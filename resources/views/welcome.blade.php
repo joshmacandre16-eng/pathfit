@@ -36,7 +36,9 @@
             background: white;
         }
 
-        /* ========== PREMIUM HEADER ========== */
+          body::-webkit-scrollbar {
+            display: none;
+        }      /* ========== PREMIUM HEADER ========== */
         nav {
             position: fixed;
             top: 0;
@@ -89,6 +91,7 @@
             color: white;
             box-shadow: 0 10px 20px -6px rgba(16, 185, 129, 0.35);
             transition: all 0.2s;
+            flex-shrink: 0;
         }
 
         .nav-links {
@@ -147,6 +150,9 @@
             cursor: pointer;
             text-decoration: none;
             display: inline-block;
+            min-height: 44px;
+            display: inline-flex;
+            align-items: center;
         }
 
         .btn-outline-modern:hover {
@@ -168,6 +174,9 @@
             cursor: pointer;
             text-decoration: none;
             display: inline-block;
+            min-height: 44px;
+            display: inline-flex;
+            align-items: center;
         }
 
         .btn-primary-modern:hover {
@@ -182,6 +191,10 @@
             cursor: pointer;
             padding: 0.5rem;
             z-index: 1001;
+            min-width: 44px;
+            min-height: 44px;
+            justify-content: center;
+            align-items: center;
         }
 
         .mobile-toggle span {
@@ -227,7 +240,7 @@
         }
 
         .hero-content h1 {
-            font-size: 3.8rem;
+            font-size: clamp(2.2rem, 5vw, 3.8rem);
             font-weight: 800;
             color: var(--dark);
             line-height: 1.15;
@@ -243,7 +256,7 @@
         }
 
         .hero-content p {
-            font-size: 1.2rem;
+            font-size: clamp(1rem, 2vw, 1.2rem);
             color: var(--gray);
             margin-bottom: 2.5rem;
             line-height: 1.6;
@@ -268,6 +281,7 @@
             transition: var(--transition);
             border: none;
             cursor: pointer;
+            min-height: 52px;
         }
 
         .btn-hero-primary {
@@ -327,6 +341,7 @@
 
         .feature-item svg {
             color: var(--primary);
+            flex-shrink: 0;
         }
 
         .hero-visual {
@@ -360,7 +375,7 @@
 
         /* ========== FEATURES ENHANCED ========== */
         .features {
-            padding: 7rem 2rem;
+            padding: clamp(3rem, 8vw, 7rem) 2rem;
             background: white;
         }
 
@@ -368,6 +383,7 @@
             text-align: center;
             max-width: 800px;
             margin: 0 auto 4rem;
+            padding: 0 1rem;
         }
 
         .section-tag {
@@ -383,7 +399,7 @@
         }
 
         .section-header h2 {
-            font-size: 2.8rem;
+            font-size: clamp(1.8rem, 4vw, 2.8rem);
             font-weight: 800;
             color: var(--dark);
             margin-bottom: 1rem;
@@ -391,7 +407,7 @@
         }
 
         .section-header p {
-            font-size: 1.2rem;
+            font-size: clamp(1rem, 2vw, 1.2rem);
             color: var(--gray);
         }
 
@@ -428,10 +444,11 @@
             justify-content: center;
             margin-bottom: 1.5rem;
             color: var(--primary-dark);
+            flex-shrink: 0;
         }
 
         .feature-card h3 {
-            font-size: 1.5rem;
+            font-size: clamp(1.1rem, 2vw, 1.5rem);
             font-weight: 700;
             color: var(--dark);
             margin-bottom: 0.75rem;
@@ -444,7 +461,7 @@
 
         /* ========== STEPS REFINED ========== */
         .how-it-works {
-            padding: 5rem 2rem 7rem;
+            padding: clamp(3rem, 6vw, 5rem) 2rem clamp(3rem, 8vw, 7rem);
             background: #fafef9;
         }
 
@@ -492,7 +509,7 @@
         }
 
         .step-card h3 {
-            font-size: 1.3rem;
+            font-size: clamp(1rem, 2vw, 1.3rem);
             font-weight: 700;
             color: var(--dark);
             margin-bottom: 0.75rem;
@@ -505,7 +522,7 @@
 
         /* ========== COACHES ========== */
         .coaches {
-            padding: 7rem 2rem;
+            padding: clamp(3rem, 8vw, 7rem) 2rem;
             background: white;
         }
 
@@ -553,11 +570,12 @@
             border-radius: 50%;
             object-fit: cover;
             margin: 0 auto 1.2rem;
+            display: block;
             border: 3px solid rgba(16, 185, 129, 0.25);
         }
 
         .coach-card h3 {
-            font-size: 1.25rem;
+            font-size: clamp(1rem, 2vw, 1.25rem);
             font-weight: 700;
             color: var(--dark);
             margin-bottom: 0.5rem;
@@ -578,7 +596,7 @@
 
         /* ========== CTA ========== */
         .cta-section {
-            padding: 7rem 2rem;
+            padding: clamp(3rem, 8vw, 7rem) 2rem;
             background: linear-gradient(115deg, #0a2b1f, var(--primary-dark));
             position: relative;
             overflow: hidden;
@@ -600,17 +618,18 @@
             text-align: center;
             position: relative;
             z-index: 2;
+            padding: 0 1rem;
         }
 
         .cta-container h2 {
-            font-size: 3.2rem;
+            font-size: clamp(1.8rem, 5vw, 3.2rem);
             font-weight: 800;
             color: white;
             margin-bottom: 1.2rem;
         }
 
         .cta-container p {
-            font-size: 1.2rem;
+            font-size: clamp(1rem, 2vw, 1.2rem);
             color: rgba(255, 255, 255, 0.9);
             margin-bottom: 2.5rem;
         }
@@ -632,7 +651,9 @@
             transition: var(--transition);
             box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
             text-decoration: none;
-            display: inline-block;
+            display: inline-flex;
+            align-items: center;
+            min-height: 52px;
         }
 
         .btn-white:hover {
@@ -650,7 +671,9 @@
             font-size: 1rem;
             transition: var(--transition);
             text-decoration: none;
-            display: inline-block;
+            display: inline-flex;
+            align-items: center;
+            min-height: 52px;
         }
 
         .btn-outline-white:hover {
@@ -663,7 +686,7 @@
         footer {
             background: var(--darker);
             color: white;
-            padding: 4rem 2rem 2rem;
+            padding: clamp(2rem, 5vw, 4rem) 2rem 2rem;
         }
 
         .footer-content {
@@ -694,11 +717,12 @@
         .social-links {
             display: flex;
             gap: 1rem;
+            flex-wrap: wrap;
         }
 
         .social-link {
-            width: 40px;
-            height: 40px;
+            width: 44px;
+            height: 44px;
             background: rgba(255, 255, 255, 0.08);
             border-radius: 14px;
             display: flex;
@@ -727,6 +751,10 @@
             margin-bottom: 0.7rem;
             transition: color 0.2s;
             font-size: 0.9rem;
+            padding: 0.2rem 0;
+            min-height: 32px;
+            display: flex;
+            align-items: center;
         }
 
         .footer-section a:hover {
@@ -741,57 +769,280 @@
             font-size: 0.9rem;
         }
 
-        /* ========== RESPONSIVE ========== */
-        @media (max-width: 1024px) {
-            .hero-container { grid-template-columns: 1fr; gap: 2.5rem; }
-            .features-grid { grid-template-columns: repeat(2, 1fr); }
-            .steps-grid { grid-template-columns: repeat(2, 1fr); }
-            .coaches-grid { grid-template-columns: repeat(2, 1fr); }
-            .footer-content { grid-template-columns: repeat(2, 1fr); }
+        a { text-decoration: none; }
+        .Started { color: white; }
+
+        /* ========== LARGE DESKTOP (1201px+) ========== */
+        @media (min-width: 1201px) {
+            .hero-content h1 { font-size: 3.8rem; }
+            .features-grid { grid-template-columns: repeat(3, 1fr); }
+            .steps-grid { grid-template-columns: repeat(4, 1fr); }
+            .coaches-grid { grid-template-columns: repeat(4, 1fr); }
+        }
+           .mobile-cta-wrapper {
+                display: none;
+            }
+
+        /* ========== DESKTOP (1025px – 1200px) ========== */
+        @media (max-width: 1200px) {
+            .hero-container { gap: 2.5rem; }
+            .features-grid { grid-template-columns: repeat(3, 1fr); gap: 1.5rem; }
+            .steps-grid { grid-template-columns: repeat(4, 1fr); gap: 1.5rem; }
+            .coaches-grid { grid-template-columns: repeat(4, 1fr); gap: 1.5rem; }
+            .footer-content { grid-template-columns: 2fr 1fr 1fr 1fr; gap: 2rem; }
+            .footer-content .footer-section:last-child { grid-column: span 1; }
         }
 
+        /* ========== LARGE TABLET / SMALL DESKTOP (769px – 1024px) ========== */
+        @media (max-width: 1024px) {
+            .hero-container {
+                grid-template-columns: 1fr;
+                gap: 2.5rem;
+                padding-top: 2rem;
+                padding-bottom: 2rem;
+            }
+            .hero-content { order: 1; }
+            .hero-visual { order: 2; max-width: 600px; margin: 0 auto; }
+            .hero-content p { max-width: 100%; }
+            .features-grid { grid-template-columns: repeat(2, 1fr); gap: 1.5rem; }
+            .steps-grid { grid-template-columns: repeat(2, 1fr); gap: 1.5rem; }
+            .coaches-grid { grid-template-columns: repeat(2, 1fr); gap: 1.5rem; }
+            .footer-content { grid-template-columns: repeat(2, 1fr); gap: 2rem; }
+            .footer-brand { grid-column: span 2; }
+        }
+
+        /* ========== TABLET (601px – 768px) ========== */
         @media (max-width: 768px) {
+            nav { padding: 0.8rem 0; }
+            .nav-container { padding: 0 1.25rem; position: relative; }
+
             .nav-links {
                 display: none;
                 position: absolute;
-                top: 100%;
+                top: calc(100% + 0.5rem);
                 left: 0;
                 right: 0;
                 background: rgba(255, 255, 255, 0.98);
                 backdrop-filter: blur(20px);
                 flex-direction: column;
-                padding: 2rem;
-                gap: 1.5rem;
+                padding: 1.5rem;
+                gap: 0.25rem;
                 box-shadow: 0 20px 35px rgba(0, 0, 0, 0.08);
                 border-bottom: 1px solid rgba(16, 185, 129, 0.2);
                 align-items: stretch;
+                border-radius: 0 0 16px 16px;
             }
+
             .nav-links.active { display: flex; }
+
+            .nav-links li a {
+                padding: 0.75rem 0.5rem;
+                font-size: 1.05rem;
+                border-bottom: 1px solid rgba(0,0,0,0.04);
+                min-height: 44px;
+                display: flex;
+                align-items: center;
+            }
+
+            .nav-links li:last-child a { border-bottom: none; }
+
             .mobile-toggle { display: flex; }
             .nav-cta { display: none; }
+
             .mobile-cta-wrapper {
                 display: flex;
                 flex-direction: column;
-                gap: 1rem;
+                gap: 0.75rem;
                 width: 100%;
-                margin-top: 1rem;
+                margin-top: 0.75rem;
                 padding-top: 1rem;
                 border-top: 1px solid rgba(0, 0, 0, 0.05);
             }
-            .hero-content h1 { font-size: 2.5rem; }
-            .section-header h2 { font-size: 2rem; }
-            .features-grid, .steps-grid, .coaches-grid { grid-template-columns: 1fr; }
-            .cta-container h2 { font-size: 2rem; }
-            .cta-actions { flex-direction: column; align-items: center; }
-            .footer-content { grid-template-columns: 1fr; }
+               .mobile-cta-wrapper {
+                display: block;
+            }
+
+            .mobile-cta-wrapper a {
+                text-align: center;
+                justify-content: center;
+                width: 100%;
+                min-height: 48px;
+            }
+
+            .hero {
+                padding-top: 70px;
+                min-height: auto;
+                padding-bottom: 3rem;
+            }
+
+            .hero-container {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+                padding-top: 1.5rem;
+                padding-bottom: 1.5rem;
+            }
+
+            .hero-content h1 { font-size: clamp(1.9rem, 6vw, 2.5rem); }
+            .hero-content p { font-size: 1rem; margin-bottom: 1.75rem; }
+
+            .hero-actions {
+                gap: 0.75rem;
+            }
+
+            .btn-large {
+                padding: 0.85rem 1.6rem;
+                font-size: 0.95rem;
+            }
+
+            .hero-features {
+                gap: 1rem;
+            }
+
+            .feature-item { font-size: 0.9rem; }
+
+            .hero-visual { max-width: 100%; }
+            .image-wrapper { border-radius: 20px; }
+
+            .section-header { margin-bottom: 2.5rem; }
+
+            .features { padding: 3rem 1.25rem; }
+            .features-grid {
+                grid-template-columns: 1fr;
+                gap: 1.25rem;
+            }
+            .feature-card { padding: 1.75rem; }
+
+            .how-it-works { padding: 3rem 1.25rem; }
+            .steps-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 1.25rem;
+            }
+            .step-card { padding: 1.5rem 1rem; }
+
+            .coaches { padding: 3rem 1.25rem; }
+            .coaches-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 1.25rem;
+            }
+            .coach-card { padding: 1.5rem 1rem; }
+            .coach-avatar { width: 90px; height: 90px; font-size: 2rem; }
+            .coach-avatar-image { width: 90px; height: 90px; }
+
+            .cta-section { padding: 3rem 1.25rem; }
+            .cta-container h2 { font-size: clamp(1.6rem, 5vw, 2.2rem); }
+            .cta-actions { flex-direction: column; align-items: center; gap: 0.75rem; }
+            .btn-white, .btn-outline-white { width: 100%; max-width: 320px; justify-content: center; }
+
+            footer { padding: 2.5rem 1.25rem 1.5rem; }
+            .footer-content {
+                grid-template-columns: 1fr 1fr;
+                gap: 1.75rem;
+                margin-bottom: 2rem;
+            }
+            .footer-brand { grid-column: span 2; }
         }
 
-        a { text-decoration: none; }
-        .Started { color: white; }
+        /* ========== MOBILE (≤600px) ========== */
+        @media (max-width: 600px) {
+            .nav-container { padding: 0 1rem; }
+
+            .logo { font-size: 1.35rem; }
+            .logo-icon { width: 38px; height: 38px; border-radius: 12px; }
+
+            .hero { padding-top: 64px; }
+            .hero-container { padding: 0 1rem; padding-top: 1.5rem; padding-bottom: 2rem; }
+
+            .hero-content h1 { font-size: clamp(1.75rem, 7vw, 2.2rem); }
+            .hero-badge { font-size: 0.78rem; padding: 0.4rem 1rem; }
+
+            .hero-actions { flex-direction: column; gap: 0.75rem; }
+            .btn-large {
+                width: 100%;
+                justify-content: center;
+                padding: 0.9rem 1.5rem;
+            }
+
+            .hero-features {
+                flex-direction: column;
+                gap: 0.6rem;
+            }
+
+            .features { padding: 2.5rem 1rem; }
+            .features-grid { grid-template-columns: 1fr; gap: 1rem; }
+            .feature-card { padding: 1.5rem; border-radius: 20px; }
+            .feature-icon { width: 50px; height: 50px; margin-bottom: 1rem; }
+
+            .how-it-works { padding: 2.5rem 1rem 3rem; }
+            .steps-grid {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+            .step-card { padding: 1.5rem 1rem; border-radius: 20px; }
+            .step-number { width: 56px; height: 56px; font-size: 1.5rem; border-radius: 20px; }
+
+            .coaches { padding: 2.5rem 1rem; }
+            .coaches-grid {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+            .coach-card { padding: 1.5rem; border-radius: 20px; }
+            .coach-avatar { width: 80px; height: 80px; font-size: 1.75rem; }
+            .coach-avatar-image { width: 80px; height: 80px; }
+
+            .cta-section { padding: 2.5rem 1rem; }
+            .cta-container p { font-size: 1rem; }
+
+            footer { padding: 2rem 1rem 1.5rem; }
+            .footer-content {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+                margin-bottom: 1.5rem;
+            }
+            .footer-brand { grid-column: span 1; }
+            .footer-brand h3 { font-size: 1.5rem; }
+
+            .footer-bottom { font-size: 0.8rem; }
+
+            .section-header { padding: 0; margin-bottom: 2rem; }
+            .section-header p { font-size: 0.95rem; }
+        }
+
+        /* ========== EXTRA SMALL (≤380px) ========== */
+        @media (max-width: 380px) {
+            .logo { font-size: 1.2rem; }
+            .logo-icon { width: 34px; height: 34px; }
+            .hero-content h1 { font-size: 1.65rem; }
+            .btn-large { font-size: 0.9rem; }
+            .step-card, .feature-card, .coach-card { border-radius: 16px; }
+        }
+
+        /* ========== LANDSCAPE MOBILE ========== */
+        @media (max-width: 768px) and (orientation: landscape) {
+            .hero {
+                min-height: auto;
+                padding-top: 70px;
+                padding-bottom: 2rem;
+            }
+            .hero-container {
+                grid-template-columns: 1fr 1fr;
+                gap: 1.5rem;
+                align-items: start;
+            }
+            .hero-visual { display: block; }
+            .steps-grid { grid-template-columns: repeat(4, 1fr); }
+        }
+
+        /* ========== PRINT ========== */
+        @media print {
+            nav, .cta-section { display: none; }
+            .hero { min-height: auto; padding-top: 1rem; }
+            .hero-container { grid-template-columns: 1fr; }
+            .features-grid, .steps-grid, .coaches-grid { grid-template-columns: repeat(2, 1fr); }
+        }
     </style>
 </head>
 <body>
-    <!-- Navigation - PREMIUM HEADER (design upgraded, data untouched) -->
+    <!-- Navigation -->
     <nav id="navbar">
         <div class="nav-container">
             <a href="#" class="logo">
@@ -806,18 +1057,20 @@
                 <li><a href="#home" onclick="scrollTo('home')">Dashboard</a></li>
                 <li><a href="#features" onclick="scrollTo('features')">Features</a></li>
                 <li><a href="#coaches" onclick="scrollTo('coaches')">Coaches</a></li>
-                <!-- Mobile CTAs appear dynamically via CSS .mobile-cta-wrapper but we keep structure -->
+                <div class="mobile-cta-wrapper" >
+                    <a href="{{ route('login')}}" class="btn-outline-modern">Log in</a>
+                </div>
             </ul>
             <div class="nav-cta">
                 <a href="{{ route('login')}}" class="btn-outline-modern">Log in</a>
             </div>
-            <div class="mobile-toggle" onclick="toggleMenu()">
+            <div class="mobile-toggle" onclick="toggleMenu()" aria-label="Toggle navigation" role="button">
                 <span></span><span></span><span></span>
             </div>
         </div>
     </nav>
 
-    <!-- Hero Section (data untouched, design polished) -->
+    <!-- Hero Section -->
     <section class="hero" id="home">
         <div class="hero-container">
             <div class="hero-content">
@@ -864,7 +1117,7 @@
         </div>
     </section>
 
-   <!-- Features Section (data untouched) -->
+    <!-- Features Section -->
     <section class="features" id="features">
         <div class="section-header">
             <span class="section-tag">{{ isset($welcomeData['features']['section_tag']) ? $welcomeData['features']['section_tag']->value : 'FEATURES' }}</span>
@@ -872,7 +1125,6 @@
             <p>{{ isset($welcomeData['features']['section_subtitle']) ? $welcomeData['features']['section_subtitle']->value : 'Powered by advanced AI technology to deliver personalized fitness experiences that actually work.' }}</p>
         </div>
         <div class="features-grid">
-            <!-- 6 feature cards - content preserved -->
             <div class="feature-card"><div class="feature-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5M2 12l10 5 10-5"/></svg></div><h3>{{ isset($welcomeData['features']['feature_1_title']) ? $welcomeData['features']['feature_1_title']->value : 'Smart Workout Plans' }}</h3><p>{{ isset($welcomeData['features']['feature_1_description']) ? $welcomeData['features']['feature_1_description']->value : 'AI-generated programs tailored to your fitness level, goals, and available equipment. Adapts in real-time based on your performance.' }}</p></div>
             <div class="feature-card"><div class="feature-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg></div><h3>{{ isset($welcomeData['features']['feature_2_title']) ? $welcomeData['features']['feature_2_title']->value : 'Real-Time Analytics' }}</h3><p>{{ isset($welcomeData['features']['feature_2_description']) ? $welcomeData['features']['feature_2_description']->value : 'Track every metric that matters with comprehensive analytics and insights to optimize your training.' }}</p></div>
             <div class="feature-card"><div class="feature-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg></div><h3>{{ isset($welcomeData['features']['feature_3_title']) ? $welcomeData['features']['feature_3_title']->value : 'Expert Coaching' }}</h3><p>{{ isset($welcomeData['features']['feature_3_description']) ? $welcomeData['features']['feature_3_description']->value : 'Get guidance from certified trainers and AI-powered form corrections to ensure safe, effective workouts.' }}</p></div>
@@ -882,7 +1134,7 @@
         </div>
     </section>
 
-    <!-- How It Works Section (data untouched) -->
+    <!-- How It Works Section -->
     <section class="how-it-works" id="how-it-works">
         <div class="steps-container">
             <div class="section-header">
@@ -899,7 +1151,7 @@
         </div>
     </section>
 
-    <!-- Coaches Section (data untouched) -->
+    <!-- Coaches Section -->
     <section class="coaches" id="coaches">
         <div class="section-header">
             <span class="section-tag">{{ isset($welcomeData['coaches']['section_tag']) ? $welcomeData['coaches']['section_tag']->value : 'OUR TEAM' }}</span>
@@ -927,7 +1179,7 @@
         </div>
     </section>
 
-    <!-- Footer (data untouched) -->
+    <!-- Footer -->
     <footer>
         <div class="footer-content">
             <div class="footer-brand"><h3>PathFit AI</h3><p>Revolutionizing fitness through AI-powered training and personalized coaching for athletes of all levels.</p><div class="social-links"><a href="#" class="social-link"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg></a><a href="#" class="social-link"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M23.953 4.57a10 10 0 01-2.825.775 4.958 4.958 0 002.163-2.723c-.951.555-2.005.959-3.127 1.184a4.92 4.92 0 00-8.384 4.482C7.69 8.095 4.067 6.13 1.64 3.162a4.822 4.822 0 00-.666 2.475c0 1.71.87 3.213 2.188 4.096a4.904 4.904 0 01-2.228-.616v.06a4.923 4.923 0 003.946 4.827 4.996 4.996 0 01-2.212.085 4.936 4.936 0 004.604 3.417 9.867 9.867 0 01-6.102 2.105c-.39 0-.779-.023-1.17-.067a13.995 13.995 0 007.557 2.209c9.053 0 13.998-7.496 13.998-13.985 0-.21 0-.42-.015-.63A9.935 9.935 0 0024 4.59z"/></svg></a><a href="#" class="social-link"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069z"/></svg></a><a href="#" class="social-link"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg></a></div></div>
@@ -945,6 +1197,7 @@
             if (window.scrollY > 50) navbar.classList.add('scrolled');
             else navbar.classList.remove('scrolled');
         });
+
         function scrollTo(id) {
             const element = document.getElementById(id);
             if (element) {
@@ -954,17 +1207,45 @@
                 document.getElementById('navLinks').classList.remove('active');
             }
         }
-        function toggleMenu() { document.getElementById('navLinks').classList.toggle('active'); }
+
+        function toggleMenu() {
+            const navLinks = document.getElementById('navLinks');
+            navLinks.classList.toggle('active');
+        }
+
+        // Close menu when clicking outside
+        document.addEventListener('click', (e) => {
+            const navLinks = document.getElementById('navLinks');
+            const toggle = document.querySelector('.mobile-toggle');
+            if (!navLinks.contains(e.target) && !toggle.contains(e.target)) {
+                navLinks.classList.remove('active');
+            }
+        });
+
+        // Close menu on resize to desktop
+        window.addEventListener('resize', () => {
+            if (window.innerWidth > 768) {
+                document.getElementById('navLinks').classList.remove('active');
+            }
+        });
+
         const observerOptions = { threshold: 0.1, rootMargin: '0px 0px -50px 0px' };
         const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => { if (entry.isIntersecting) { entry.target.style.opacity = '1'; entry.target.style.transform = 'translateY(0)'; } });
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
         }, observerOptions);
+
         document.addEventListener('DOMContentLoaded', () => {
             document.querySelectorAll('.feature-card, .step-card, .coach-card').forEach(el => {
-                el.style.opacity = '0'; el.style.transform = 'translateY(30px)'; el.style.transition = 'all 0.6s ease-out';
+                el.style.opacity = '0';
+                el.style.transform = 'translateY(30px)';
+                el.style.transition = 'all 0.6s ease-out';
                 observer.observe(el);
             });
-            
         });
     </script>
 </body>

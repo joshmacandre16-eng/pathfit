@@ -1,18 +1,13 @@
-# Fix PHP Syntax Error in Layouts (unexpected token ',')
+# Git Push All Code to https://github.com/joshmacandre16-eng/pathfit
 
-## Plan Overview
+- [x] Analyzed git status, conflicts, files (approved plan)
+- [x] Created TODO.md
 
-Modernize JS syntax in `master.blade.php` to ES6 arrow functions for consistency. Wrap all `<script>` blocks in `{!! ... !!}` across 3 layouts to output raw JS, preventing PHP parser from interpreting JS code.
+- [ ] Step 1: Resolve merge conflicts in 4 files (remove markers, keep local content)
+- [ ] Step 2: Stage all changes `git add .`
+- [ ] Step 3: Complete merge commit `git commit`
+- [ ] Step 4: Push branch `git push origin blackboxai/fix-docker-npm-build`
+- [ ] Step 5: Verify with `git status` & `git log --oneline -3`
+- [ ] Step 6: (opt) Create PR if gh CLI available
 
-## Steps
-
-- [x] **Step 1:** Read contents of 3 layout files ✓
-- [x] **Step 2:** Edit `master.blade.php` - Modernized JS + raw wrap ✓
-- [x] **Step 3:** Edit `masterathlete.blade.php` - Raw script wrap ✓
-- [x] **Step 5:** `php artisan view:clear` executed ✓
-
-**Task Complete:** PHP syntax errors fixed in all layouts by wrapping JS blocks raw + modernizing syntax. Views cache cleared. Test pages - no more "unexpected token ','" errors.
-
-## Final TODO
-
-No remaining steps.
+**Status:** Resolving conflicts → clean repo → push

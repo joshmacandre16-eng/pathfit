@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\View\View;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Hash;
 use App\Models\User;
 
 class ProfileController extends Controller
@@ -41,7 +42,7 @@ class ProfileController extends Controller
                 'user' => $request->user(),
             ]);
         }
-        return view('profile.edits', [
+        return view('admin.profile.edits', [
             'user' => $request->user(),
         ]);
     }
@@ -92,6 +93,13 @@ class ProfileController extends Controller
             if (isset($validated[$field]) && is_string($validated[$field])) {
                 $validated[$field] = array_map('trim', explode(',', $validated[$field]));
             }
+        }
+
+        // Handle password safely - skip if empty to avoid NULL constraint
+        if (isset($validated['password']) && !empty($validated['password'])) {
+            $user->password = Hash::make($validated['password']);
+        } else {
+            unset($validated['password']);
         }
 
         $user->fill($validated);
