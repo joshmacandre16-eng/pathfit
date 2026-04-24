@@ -26,7 +26,7 @@ WORKDIR /var/www
 COPY . .
 
 # Install dependencies
-RUN composer install --optimize-autoloader --no-dev --no-interaction
+RUN COMPOSER_NO_SCRIPTS=1 composer install --optimize-autoloader --no-dev --no-interaction
 RUN npm install && npm run build
 
 # Set permissions
