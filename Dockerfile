@@ -11,6 +11,9 @@ FROM php:8.3-fpm-alpine
 
 WORKDIR /var/www/html
 
+# Define PHPIZE_DEPS for easier management
+ENV PHPIZE_DEPS="autoconf dpkg-dev dpkg file g++ gcc libc-dev make pkgconf re2c"
+
 # Install build and runtime dependencies
 RUN apk add --no-cache \
     $PHPIZE_DEPS \
@@ -19,6 +22,7 @@ RUN apk add --no-cache \
     freetype-dev \
     oniguruma-dev \
     postgresql-dev \
+    libzip-dev \
     zip \
     unzip \
     git \
@@ -27,8 +31,23 @@ RUN apk add --no-cache \
     supervisor \
     sqlite \
     && docker-php-ext-configure gd --with-freetype --with-jpeg \
-    && docker-php-ext-install -j$(nproc) gd pdo pdo_mysql pdo_pgsql exif pcntl bcmath mysqli zip \
-    && apk del $PHPIZE_DEPS libpng-dev libjpeg-turbo-dev freetype-dev oniguruma-dev postgresql-dev \
+    && docker-php-ext-install -j$(nproc) \
+        gd \
+        pdo \
+        pdo_mysql \
+        pdo_pgsql \
+        exif \
+        pcntl \
+        bcmath \
+        mysqli \
+        zip \
+    && apk del $PHPIZE_DEPS \
+        libpng-dev \
+        libjpeg-turbo-dev \
+        freetype-dev \
+        oniguruma-dev \
+        postgresql-dev \
+        libzip-dev \
     && rm -rf /var/cache/apk/*
 
 # Install Composer
@@ -44,7 +63,8 @@ COPY --from=node-builder /app/public/build ./public/build
 
 # Set permissions
 RUN chown -R www-data:www-data /var/www/html \
-    && chmod -R 755 /var/www/html/storage /var/www/html/bootstrap/cache
+    && chmod -R 755 /var/www/html/storage \
+    && chmod -R 755 /var/www/html/bootstrap/cache
 
 # Copy runtime configurations
 COPY docker/nginx.conf /etc/nginx/http.d/default.conf
