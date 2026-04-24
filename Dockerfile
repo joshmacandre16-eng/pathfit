@@ -18,6 +18,7 @@ RUN apk add --no-cache \
     libjpeg-turbo-dev \
     freetype-dev \
     oniguruma-dev \
+    postgresql-dev \
     zip \
     unzip \
     git \
@@ -27,7 +28,7 @@ RUN apk add --no-cache \
     sqlite \
     && docker-php-ext-configure gd --with-freetype --with-jpeg \
     && docker-php-ext-install -j$(nproc) gd pdo pdo_mysql pdo_pgsql exif pcntl bcmath mysqli zip \
-    && apk del $PHPIZE_DEPS libpng-dev libjpeg-turbo-dev freetype-dev oniguruma-dev \
+    && apk del $PHPIZE_DEPS libpng-dev libjpeg-turbo-dev freetype-dev oniguruma-dev postgresql-dev \
     && rm -rf /var/cache/apk/*
 
 # Install Composer
