@@ -575,7 +575,7 @@
   </div>
   @endif
 
-  <form method="POST" action="{{ route('register') }}">
+<form method="POST" action="{{ route('register') }}">
     @csrf
 
     <!-- Name Row -->
@@ -699,7 +699,7 @@
     </div>
 
     <button type="submit" class="btn-register">Create Account</button>
-  </form>
+</form>
 
   <p class="sign-in">Already have an account? <a href="{{ route('login') }}">Sign in →</a></p>
 </div>
