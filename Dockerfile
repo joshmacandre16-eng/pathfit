@@ -1,34 +1,67 @@
-# Base image assumption from build logs (PHP 8.3 on Alpine)
-FROM php:8.3-fpm-alpine
+# Stage 1: Build frontend assets
+FROM node:18-alpine AS frontend
 
-# Install build dependencies, runtime tools, and PHP extensions
+WORKDIR /build
+
+# Copy package files
+COPY package*.json ./
+COPY vite.config.js ./
+COPY tailwind.config.js ./
+COPY postcss.config.js ./
+
+# Install dependencies
+RUN npm install
+
+# Copy source files
+COPY resources ./resources
+COPY public ./public
+
+# Build assets
+RUN npm run build
+
+# Stage 2: PHP application
+FROM php:8.2-fpm-alpine
+
+# Install system dependencies
 RUN apk add --no-cache \
-    $PHPIZE_DEPS \
+    curl \
     libpng-dev \
-    libjpeg-turbo-dev \
-    freetype-dev \
     oniguruma-dev \
-    postgresql-dev \
-    libzip-dev \
-    libzip \
+    libxml2-dev \
     zip \
     unzip \
-    git \
-    curl \
-    nginx \
-    supervisor \
-    sqlite \
-    && docker-php-ext-configure gd --with-freetype --with-jpeg \
-    && docker-php-ext-install -j$(nproc) gd pdo pdo_mysql pdo_pgsql exif pcntl bcmath mysqli zip \
-    && apk del \
-    $PHPIZE_DEPS \
-    libpng-dev \
-    libjpeg-turbo-dev \
-    freetype-dev \
-    oniguruma-dev \
-    postgresql-dev \
-    libzip-dev \
-    && rm -rf /var/cache/apk/*
+    git
 
-# Continue with your application setup...
+# Install PHP extensions
+RUN docker-php-ext-install \
+    pdo_mysql \
+    mbstring \
+    exif \
+    pcntl \
+    bcmath \
+    gd \
+    xml
 
+# Get Composer
+COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
+
+WORKDIR /app
+
+# Copy application files
+COPY . .
+
+# Copy built assets from frontend stage
+COPY --from=frontend /build/public/build ./public/build
+
+# Install PHP dependencies
+RUN composer install --no-dev --optimize-autoloader
+
+# Set permissions
+RUN chown -R www-data:www-data /app/storage /app/bootstrap/cache
+RUN chmod -R 775 /app/storage /app/bootstrap/cache
+
+# Expose port
+EXPOSE 9000
+
+# Start PHP-FPM
+CMD ["php-fpm"]
