@@ -1,18 +1,13 @@
-# Deployment Fix Plan
+# Railway 502 Fix Plan
 
-## Issues
+## Root Cause
 
-1. Missing runtime libraries in Dockerfile (libpng, libpq removed after build)
-2. Working directory mismatch between Dockerfile (/var/www/html) and docker-compose/railpack (/app)
-3. Nginx config root path mismatch
-4. Railpack build command runs migrations during build phase
-5. DOCKER.md outdated for single-container architecture
+- `railpack.toml` forces Railway to use Railpack builder instead of Dockerfile
+- No `[start]` command in `railpack.toml`, so container exits after build
+- Dockerfile (PHP-FPM + Nginx + Supervisor) is ignored
 
 ## Tasks
 
-- [x] Fix Dockerfile: add runtime packages, use --virtual build-deps, change WORKDIR to /app
-- [x] Fix docker/nginx.conf: update root to /app/public
-- [x] Fix docker-compose.yml: remove redundant separate nginx service, expose port 80 on app
-- [x] Fix railpack.toml: remove migrate from build cmd, remove redundant cache commands
-- [x] Update DOCKER.md: reflect single-container architecture
-- [x] Fix Dockerfile: defer composer autoloader/scripts until after artisan is copied to prevent build failure
+- [x] Delete `railpack.toml`
+- [x] Create `docker/railway-start.sh` startup script (handles `$PORT`, runs Laravel optimizations, starts Supervisor)
+- [x] Update `Dockerfile` to use the startup script as CMD
