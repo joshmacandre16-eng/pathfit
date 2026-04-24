@@ -12,34 +12,37 @@
     --mid: #181C12;
     --card: #1E2418;
     --muted: #4A5240;
-    --text: #e0eaed;
-    --accent: #7BFF4F;
+    --text: #E8EDE0;
+    --accent: #3ce2ee8e;
   }
 
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
 
   body {
     font-family: 'DM Sans', sans-serif;
     background: var(--dark);
     color: var(--text);
-    height: 100vh;
+    min-height: 100vh;
     display: flex;
-    overflow: hidden;
   }
 
-  /* ── LEFT PANEL ── */
+  /* ─── LEFT PANEL ───────────────────────────────────────────────────────── */
   .left {
     width: 52%;
-    position: relative;
+    position: sticky;
+    top: 0;
+    height: 100vh;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    padding: 48px 56px;
+    padding: clamp(32px, 5vw, 56px) clamp(28px, 5vw, 56px);
     background: var(--mid);
     overflow: hidden;
+    flex-shrink: 0;
   }
 
-  /* animated grid background */
   .left::before {
     content: '';
     position: absolute;
@@ -56,7 +59,6 @@
     to   { background-position: 48px 48px; }
   }
 
-  /* glowing orb */
   .orb {
     position: absolute;
     width: 460px;
@@ -74,16 +76,13 @@
     50%       { opacity: 1; transform: scale(1.08); }
   }
 
-  .left-top {
-    position: relative;
-    z-index: 2;
-  }
+  .left-top { position: relative; z-index: 2; }
 
   .logo-mark {
     display: flex;
     align-items: center;
     gap: 10px;
-    margin-bottom: 72px;
+    margin-bottom: clamp(40px, 6vh, 72px);
     animation: fadeDown .6s ease both;
   }
 
@@ -94,6 +93,7 @@
     border-radius: 10px;
     display: grid;
     place-items: center;
+    flex-shrink: 0;
   }
 
   .logo-icon svg { width: 22px; height: 22px; }
@@ -118,21 +118,18 @@
 
   .hero-headline {
     font-family: 'Bebas Neue', sans-serif;
-    font-size: clamp(64px, 7vw, 96px);
+    font-size: clamp(52px, 6.5vw, 96px);
     line-height: .94;
     letter-spacing: .01em;
     color: var(--text);
     animation: fadeDown .6s .2s ease both;
   }
 
-  .hero-headline span {
-    color: var(--lime);
-    display: block;
-  }
+  .hero-headline span { color: var(--lime); display: block; }
 
   .hero-sub {
     margin-top: 28px;
-    font-size: 15px;
+    font-size: clamp(13px, 1.2vw, 15px);
     font-weight: 300;
     line-height: 1.7;
     color: #8A9480;
@@ -140,46 +137,11 @@
     animation: fadeDown .6s .3s ease both;
   }
 
-  /* stats row */
-  .stats {
-    position: relative;
-    z-index: 2;
-    display: flex;
-    gap: 0;
-    border-top: 1px solid rgba(200,241,53,.12);
-    padding-top: 32px;
-    animation: fadeUp .6s .5s ease both;
-  }
-
-  .stat {
-    flex: 1;
-    padding-right: 32px;
-    border-right: 1px solid rgba(200,241,53,.1);
-    margin-right: 32px;
-  }
-
-  .stat:last-child { border-right: none; margin-right: 0; }
-
-  .stat-num {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 40px;
-    color: var(--lime);
-    line-height: 1;
-  }
-
-  .stat-label {
-    font-size: 12px;
-    color: var(--muted);
-    margin-top: 4px;
-    letter-spacing: .04em;
-  }
-
-  /* feature pills */
   .pills {
     display: flex;
     flex-wrap: wrap;
     gap: 10px;
-    margin-top: 32px;
+    margin-top: 28px;
     animation: fadeDown .6s .4s ease both;
   }
 
@@ -204,37 +166,63 @@
     flex-shrink: 0;
   }
 
-  /* ── RIGHT PANEL (SCROLLABLE) ── */
+  .stats {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    gap: 0;
+    border-top: 1px solid rgba(200,241,53,.12);
+    padding-top: 28px;
+    animation: fadeUp .6s .5s ease both;
+  }
+
+  .stat {
+    flex: 1;
+    padding-right: 24px;
+    border-right: 1px solid rgba(200,241,53,.1);
+    margin-right: 24px;
+    min-width: 0;
+  }
+
+  .stat:last-child { border-right: none; margin-right: 0; }
+
+  .stat-num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(28px, 3vw, 40px);
+    color: var(--lime);
+    line-height: 1;
+  }
+
+  .stat-label {
+    font-size: 11px;
+    color: var(--muted);
+    margin-top: 4px;
+    letter-spacing: .04em;
+  }
+
+  /* ─── RIGHT PANEL ───────────────────────────────────────────────────────── */
   .right {
     width: 48%;
     display: flex;
     flex-direction: column;
-    justify-content: center;
-    padding: 64px 56px;
+    justify-content: flex-start;
+    padding: clamp(72px, 8vh, 96px) clamp(24px, 5vw, 56px) clamp(40px, 6vh, 64px);
     background: var(--dark);
     position: relative;
     overflow-y: auto;
     scrollbar-width: thin;
     scrollbar-color: var(--muted) var(--dark);
+    min-height: 100vh;
   }
 
-  .right::-webkit-scrollbar {
-    width: 6px;
-  }
-
-  .right::-webkit-scrollbar-track {
-    background: var(--dark);
-  }
-
-  .right::-webkit-scrollbar-thumb {
-    background: var(--muted);
-    border-radius: 3px;
-  }
+  .right::-webkit-scrollbar { width: 6px; }
+  .right::-webkit-scrollbar-track { background: var(--dark); }
+  .right::-webkit-scrollbar-thumb { background: var(--muted); border-radius: 3px; }
 
   .back-home {
-    position: absolute;
-    top: 36px;
-    right: 48px;
+    position: fixed;
+    top: 28px;
+    right: clamp(20px, 4vw, 48px);
     display: flex;
     align-items: center;
     gap: 8px;
@@ -247,15 +235,21 @@
     transition: color .2s;
     animation: fadeDown .6s .1s ease both;
     cursor: pointer;
+    z-index: 100;
+    background: rgba(13,15,10,.85);
+    padding: 8px 14px;
+    border-radius: 100px;
+    border: 1px solid rgba(255,255,255,.06);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
   }
 
   .back-home:hover { color: var(--lime); }
-
   .back-home svg { transition: transform .2s; }
   .back-home:hover svg { transform: translateX(-4px); }
 
   .form-header {
-    margin-bottom: 40px;
+    margin-bottom: 36px;
     animation: fadeDown .6s .2s ease both;
   }
 
@@ -270,7 +264,7 @@
 
   .form-title {
     font-family: 'Bebas Neue', sans-serif;
-    font-size: 48px;
+    font-size: clamp(36px, 4vw, 48px);
     letter-spacing: .02em;
     line-height: 1;
     color: var(--text);
@@ -283,14 +277,7 @@
     font-weight: 300;
   }
 
-  .form-group {
-    margin-bottom: 20px;
-    animation: fadeDown .6s ease both;
-  }
-
-  .form-group:nth-child(1) { animation-delay: .3s; }
-  .form-group:nth-child(2) { animation-delay: .35s; }
-  .form-group:nth-child(3) { animation-delay: .4s; }
+  .form-group { margin-bottom: 18px; }
 
   label {
     display: block;
@@ -298,20 +285,18 @@
     letter-spacing: .1em;
     text-transform: uppercase;
     color: var(--muted);
-    margin-bottom: 8px;
+    margin-bottom: 7px;
     font-family: 'Space Mono', monospace;
   }
 
-  .input-wrap {
-    position: relative;
-  }
+  .input-wrap { position: relative; }
 
   input {
     width: 100%;
     background: var(--card);
     border: 1px solid rgba(255,255,255,.07);
     border-radius: 10px;
-    padding: 14px 18px;
+    padding: 13px 44px 13px 16px;
     font-family: 'DM Sans', sans-serif;
     font-size: 15px;
     color: var(--text);
@@ -322,25 +307,26 @@
   input::placeholder { color: var(--muted); }
 
   input:focus {
-    border-color: rgba(200,241,53,.4);
-    box-shadow: 0 0 0 3px rgba(200,241,53,.06);
+    border-color: rgba(16,185,129,.4);
+    box-shadow: 0 0 0 3px rgba(16,185,129,.07);
   }
 
   .input-icon {
     position: absolute;
-    right: 16px;
+    right: 14px;
     top: 50%;
     transform: translateY(-50%);
     color: var(--muted);
     pointer-events: none;
+    display: flex;
+    align-items: center;
   }
 
   .row-options {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 28px;
-    animation: fadeDown .6s .45s ease both;
+    margin-bottom: 26px;
   }
 
   .remember {
@@ -406,6 +392,7 @@
     position: relative;
     overflow: hidden;
     transition: transform .15s, box-shadow .2s;
+    margin-top: 8px;
     animation: fadeDown .6s .5s ease both;
   }
 
@@ -418,96 +405,112 @@
     transition: transform .4s ease;
   }
 
-  .btn-login:hover { transform: translateY(-2px); box-shadow: 0 8px 32px rgba(200,241,53,.25); }
+  .btn-login:hover { transform: translateY(-2px); box-shadow: 0 8px 32px rgba(16,185,129,.25); }
   .btn-login:hover::before { transform: translateX(110%) skewX(-15deg); }
   .btn-login:active { transform: translateY(0); }
 
-  .divider {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    margin: 24px 0;
-    animation: fadeDown .6s .55s ease both;
-  }
-
-  .divider-line { flex: 1; height: 1px; background: rgba(255,255,255,.06); }
-  .divider-text { font-size: 11px; color: var(--muted); letter-spacing: .1em; font-family: 'Space Mono', monospace; }
-
-  .social-btns {
-    display: flex;
-    gap: 12px;
-    animation: fadeDown .6s .6s ease both;
-  }
-
-  .social-btn {
-    flex: 1;
-    background: var(--card);
-    border: 1px solid rgba(255,255,255,.07);
-    border-radius: 10px;
-    padding: 12px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-    font-family: 'DM Sans', sans-serif;
-    font-size: 13px;
-    color: var(--text);
-    cursor: pointer;
-    transition: border-color .2s, background .2s;
-    text-decoration: none;
-  }
-
-  .social-btn:hover {
-    border-color: rgba(200,241,53,.25);
-    background: rgba(200,241,53,.04);
-  }
-
   .sign-up {
-    margin-top: 28px;
+    margin-top: 24px;
     text-align: center;
     font-size: 13px;
     color: var(--muted);
-    animation: fadeDown .6s .65s ease both;
+    animation: fadeDown .6s .55s ease both;
   }
 
   .sign-up a { color: var(--lime); text-decoration: none; }
   .sign-up a:hover { text-decoration: underline; }
 
-  /* Error messages */
   .error-message {
     color: #ff6b6b;
     font-size: 12px;
-    margin-top: 6px;
+    margin-top: 5px;
   }
 
   .alert-error {
-    background: rgba(255, 107, 107, .15);
-    border: 1px solid rgba(255, 107, 107, .3);
+    background: rgba(255,107,107,.12);
+    border: 1px solid rgba(255,107,107,.28);
     border-radius: 8px;
     padding: 12px 16px;
-    margin-bottom: 20px;
+    margin-bottom: 18px;
     font-size: 13px;
     color: #ff6b6b;
     animation: fadeDown .3s ease both;
   }
 
-  /* animations */
   @keyframes fadeDown {
-    from { opacity: 0; transform: translateY(-16px); }
+    from { opacity: 0; transform: translateY(-14px); }
     to   { opacity: 1; transform: translateY(0); }
   }
 
   @keyframes fadeUp {
-    from { opacity: 0; transform: translateY(16px); }
+    from { opacity: 0; transform: translateY(14px); }
     to   { opacity: 1; transform: translateY(0); }
   }
 
-  /* responsive */
-  @media (max-width: 768px) {
-    body { flex-direction: column; overflow: auto; }
-    .left { width: 100%; padding: 40px 32px; }
-    .right { width: 100%; padding: 40px 32px; overflow-y: visible; }
-    .hero-headline { font-size: 56px; }
+  /* ─── TABLET (≤ 960px) ────────────────────────────────────────── */
+  @media (max-width: 960px) {
+    body { flex-direction: column; }
+
+    .left {
+      width: 100%;
+      height: auto;
+      position: relative;
+      padding: 40px 32px 36px;
+    }
+
+    .hero-headline { font-size: clamp(48px, 8vw, 72px); }
+
+    .stats { padding-top: 24px; }
+
+    .right {
+      width: 100%;
+      min-height: auto;
+      padding: 48px 32px 48px;
+      overflow-y: visible;
+    }
+
+    .back-home {
+      position: absolute;
+      top: 20px;
+      right: 24px;
+    }
+  }
+
+  /* ─── MOBILE (≤ 600px) ────────────────────────────────────────── */
+  @media (max-width: 600px) {
+    .left { padding: 28px 20px 28px; }
+
+    .logo-mark { margin-bottom: 32px; }
+
+    .hero-label { font-size: 10px; }
+
+    .hero-headline { font-size: clamp(42px, 12vw, 60px); }
+
+    .hero-sub { font-size: 13px; max-width: 100%; }
+
+    .pills { gap: 8px; }
+
+    .pill { font-size: 11px; padding: 5px 10px; }
+
+    .stats { gap: 0; }
+    .stat { padding-right: 16px; margin-right: 16px; }
+    .stat-num { font-size: 26px; }
+    .stat-label { font-size: 10px; }
+
+    .right { padding: 52px 20px 40px; }
+
+    .back-home { top: 14px; right: 14px; font-size: 10px; padding: 7px 11px; }
+
+    .form-title { font-size: 34px; }
+
+    input { font-size: 16px; /* prevent iOS zoom */ }
+  }
+
+  /* ─── SMALL MOBILE (≤ 380px) ──────────────────────────────────── */
+  @media (max-width: 380px) {
+    .hero-headline { font-size: 38px; }
+    .stat { padding-right: 12px; margin-right: 12px; }
+    .stat-num { font-size: 22px; }
   }
 </style>
 </head>
@@ -633,19 +636,11 @@
         <div class="chk-box"></div>
         Remember me
       </label>
-      <a href="#" class="forgot">Forgot password?</a>
+      <a href="{{ route('password.request') }}" class="forgot">Forgot password?</a>
     </div>
 
     <button type="submit" class="btn-login">Sign In to PathFit</button>
   </form>
-
-  <div class="divider">
-    <div class="divider-line"></div>
-    <span class="divider-text">OR</span>
-    <div class="divider-line"></div>
-  </div>
-
-
 
   <p class="sign-up">Don't have an account? <a href="{{ route('register') }}">Create one free →</a></p>
 </div>
