@@ -21,16 +21,16 @@
     docker-compose up -d --build
     ```
 
-3. **Run migrations:**
-
-    ```bash
-    docker-compose exec app php artisan migrate
-    ```
-
-4. **Generate app key (if needed):**
+3. **Generate app key (if needed):**
 
     ```bash
     docker-compose exec app php artisan key:generate
+    ```
+
+4. **Run migrations:**
+
+    ```bash
+    docker-compose exec app php artisan migrate
     ```
 
 5. **Install Node dependencies (if needed):**
@@ -67,9 +67,8 @@ docker-compose exec app php artisan migrate:fresh --seed
 
 ## Services
 
-- **app**: PHP 8.2-FPM application server
+- **app**: PHP 8.3-FPM + Nginx (single container via supervisord)
 - **mysql**: MySQL 8.0 database
-- **nginx**: Nginx web server
 
 ## Environment Variables
 
@@ -86,6 +85,7 @@ DB_PASSWORD=password
 
 ## Production Notes
 
+- The `app` container bundles PHP-FPM and Nginx via supervisord for simplicity
 - Build the frontend separately in production using `npm run build`
 - Use environment-specific configurations
 - Set proper file permissions on `storage/` and `bootstrap/cache/`

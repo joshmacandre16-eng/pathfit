@@ -9,20 +9,19 @@ RUN npm run build
 
 FROM php:8.3-fpm-alpine
 
-WORKDIR /var/www/html
+WORKDIR /app
 
 # Define PHPIZE_DEPS for easier management
 ENV PHPIZE_DEPS="autoconf dpkg-dev dpkg file g++ gcc libc-dev make pkgconf re2c"
 
 # Install build and runtime dependencies
 RUN apk add --no-cache \
-    $PHPIZE_DEPS \
-    libpng-dev \
-    libjpeg-turbo-dev \
-    freetype-dev \
-    oniguruma-dev \
-    postgresql-dev \
-    libzip-dev \
+    libpng \
+    libjpeg-turbo \
+    freetype \
+    oniguruma \
+    libpq \
+    libzip \
     zip \
     unzip \
     git \
@@ -30,6 +29,14 @@ RUN apk add --no-cache \
     nginx \
     supervisor \
     sqlite \
+    && apk add --no-cache --virtual .build-deps \
+        $PHPIZE_DEPS \
+        libpng-dev \
+        libjpeg-turbo-dev \
+        freetype-dev \
+        oniguruma-dev \
+        postgresql-dev \
+        libzip-dev \
     && docker-php-ext-configure gd --with-freetype --with-jpeg \
     && docker-php-ext-install -j$(nproc) \
         gd \
@@ -41,13 +48,7 @@ RUN apk add --no-cache \
         bcmath \
         mysqli \
         zip \
-    && apk del $PHPIZE_DEPS \
-        libpng-dev \
-        libjpeg-turbo-dev \
-        freetype-dev \
-        oniguruma-dev \
-        postgresql-dev \
-        libzip-dev \
+    && apk del .build-deps \
     && rm -rf /var/cache/apk/*
 
 # Install Composer
@@ -62,9 +63,9 @@ COPY . .
 COPY --from=node-builder /app/public/build ./public/build
 
 # Set permissions
-RUN chown -R www-data:www-data /var/www/html \
-    && chmod -R 755 /var/www/html/storage \
-    && chmod -R 755 /var/www/html/bootstrap/cache
+RUN chown -R www-data:www-data /app \
+    && chmod -R 755 /app/storage \
+    && chmod -R 755 /app/bootstrap/cache
 
 # Copy runtime configurations
 COPY docker/nginx.conf /etc/nginx/http.d/default.conf
