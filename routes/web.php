@@ -22,6 +22,24 @@ use App\Http\Controllers\Auth\AuthenticatedSessionController;
 
 Route::get('/', [WelcomeController::class, 'index']);
 
+// Database test route for Railway deployment
+Route::get('/db-test', function () {
+    try {
+        \DB::connection()->getPdo();
+        $tables = \DB::select('SHOW TABLES');
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Database connected successfully',
+            'tables' => $tables
+        ]);
+    } catch (\Exception $e) {
+        return response()->json([
+            'status' => 'error',
+            'message' => 'Database connection failed: ' . $e->getMessage()
+        ], 500);
+    }
+});
+
 // Public pages
 Route::get('/page/{slug}', [FooterLinkController::class, 'show'])->name('footer.show');
 Route::get('/privacy/{slug?}', [PrivacyController::class, 'show'])->name('privacy');
