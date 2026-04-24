@@ -15,3 +15,4 @@
 - [x] Fix docker-compose.yml: remove redundant separate nginx service, expose port 80 on app
 - [x] Fix railpack.toml: remove migrate from build cmd, remove redundant cache commands
 - [x] Update DOCKER.md: reflect single-container architecture
+- [x] Fix Dockerfile: defer composer autoloader/scripts until after artisan is copied to prevent build failure

@@ -54,13 +54,16 @@ RUN apk add --no-cache \
 # Install Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
-# Install PHP dependencies
+# Install PHP dependencies (without scripts/autoloader since artisan is not yet present)
 COPY composer.* ./
-RUN composer install --no-dev --optimize-autoloader --no-interaction --no-progress
+RUN composer install --no-dev --no-scripts --no-autoloader --no-interaction --no-progress
 
 # Copy application code and built assets
 COPY . .
 COPY --from=node-builder /app/public/build ./public/build
+
+# Generate optimized autoloader and run Laravel package discovery now that artisan exists
+RUN composer dump-autoload --optimize
 
 # Set permissions
 RUN chown -R www-data:www-data /app \
