@@ -22,6 +22,10 @@
             --transition: all 0.35s cubic-bezier(0.2, 0.95, 0.4, 1);
         }
 
+        a {
+            color:black;
+        }
+
         * {
             margin: 0;
             padding: 0;
