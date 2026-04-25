@@ -26,18 +26,18 @@ class LoginController extends Controller
             // Redirect based on role
             switch ($user->role) {
                 case 'Administrator':
-                    return redirect()->route('admin.dashboard')->with('success', 'Welcome Administrator!');
+                    return redirect()->route('admin.dashboard')->with('success', 'Welcome back, Administrator!');
                 case 'Athlete':
-                    return redirect()->route('athlete.dashboard')->with('success', 'Welcome Athlete!');
+                    return redirect()->route('athlete.dashboard')->with('success', 'Welcome back, ' . $user->fname . '!');
                 case 'Coach':
-                    return redirect()->route('coach.dashboard')->with('success', 'Welcome Coach!');
+                    return redirect()->route('coach.dashboard')->with('success', 'Welcome back, Coach ' . $user->lname . '!');
                 default:
                     Auth::logout();
-                    return redirect()->back()->with('error', 'Unauthorized role.');
+                    return redirect()->back()->with('error', 'Unauthorized role. Please contact administrator.');
             }
         }
 
-        return redirect()->back()->with('error', 'Invalid credentials.');
+        return redirect()->back()->withInput()->with('error', 'Invalid email or password. Please try again.');
     }
 
     public function logout(Request $request)

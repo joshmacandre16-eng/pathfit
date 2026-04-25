@@ -8,6 +8,8 @@ use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rules;
 use Illuminate\View\View;
 
@@ -38,24 +40,34 @@ class RegisteredUserController extends Controller
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
         ]);
 
-        $fullName = trim($request->fname . ' ' . ($request->mname ? $request->mname . ' ' : '') . $request->lname);
+        try {
+            $fullName = trim($request->fname . ' ' . ($request->mname ? $request->mname . ' ' : '') . $request->lname);
 
-        $user = User::create([
-            'name' => $fullName,
-            'fname' => $request->fname,
-            'mname' => $request->mname,
-            'lname' => $request->lname,
-            'course' => $request->course,
-            'gender' => $request->gender,
-            'email' => $request->email,
-            'password' => $request->password,
-            'role' => 'Athlete',
-        ]);
+            $user = User::create([
+                'name' => $fullName,
+                'fname' => $request->fname,
+                'mname' => $request->mname,
+                'lname' => $request->lname,
+                'course' => $request->course,
+                'gender' => $request->gender,
+                'email' => $request->email,
+                'password' => bcrypt($request->password),
+                'role' => 'Athlete',
+            ]);
 
-        event(new Registered($user));
+            event(new Registered($user));
 
-        Auth::login($user);
+            Auth::login($user);
 
-        return redirect(route('dashboard', absolute: false));
+            return redirect(route('dashboard', absolute: false));
+        } catch (\Exception $e) {
+            Log::error('Registration failed', [
+                'error' => $e->getMessage(),
+                'trace' => $e->getTraceAsString(),
+                'db_connection' => config('database.default'),
+            ]);
+            
+            return back()->withInput()->with('failed', 'Registration failed. Please try again later.');
+        }
     }
 }

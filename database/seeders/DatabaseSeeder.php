@@ -20,6 +20,8 @@ class DatabaseSeeder extends Seeder
             MessageSeeder::class,
             SessionScheduleSeeder::class,
             SportRequirementSeeder::class,
+            WelcomeContentSeeder::class,
+            FooterLinkSeeder::class,
         ]);
     }
 }

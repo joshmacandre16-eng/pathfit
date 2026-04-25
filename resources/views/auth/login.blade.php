@@ -437,6 +437,17 @@
     animation: fadeDown .3s ease both;
   }
 
+  .alert-success {
+    background: rgba(16,185,129,.12);
+    border: 1px solid rgba(16,185,129,.28);
+    border-radius: 8px;
+    padding: 12px 16px;
+    margin-bottom: 18px;
+    font-size: 13px;
+    color: var(--lime);
+    animation: fadeDown .3s ease both;
+  }
+
   @keyframes fadeDown {
     from { opacity: 0; transform: translateY(-14px); }
     to   { opacity: 1; transform: translateY(0); }
@@ -593,6 +604,12 @@
   @if (session('error'))
   <div class="alert-error">
     {{ session('error') }}
+  </div>
+  @endif
+
+  @if (session('success'))
+  <div class="alert-success">
+    {{ session('success') }}
   </div>
   @endif
 

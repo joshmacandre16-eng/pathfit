@@ -51,8 +51,8 @@ class RegisterController extends Controller
                 'role' => 'Athlete', // Default role
             ]);
 
-            // Return to register form with success message
-            return redirect()->route('register')->with('success', 'Registration successful! Please login to continue.');
+            // Return to login page with success message
+            return redirect()->route('login')->with('success', 'Registration successful! Please login to continue.');
         } catch (\Exception $e) {
             Log::error('Registration error: ' . $e->getMessage(), ['exception' => $e]);
             return redirect()->back()

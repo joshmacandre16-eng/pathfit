@@ -41,7 +41,7 @@ class AuthController extends Controller
                 'course' => $request->course,
                 'gender' => $request->gender,
                 'email' => $request->email,
-                'password' => $request->password,
+                'password' => bcrypt($request->password),
                 'role' => 'Athlete',
             ]);
 
@@ -62,6 +62,11 @@ class AuthController extends Controller
             ], 201);
 
         } catch (\Exception $e) {
+            \Log::error('API Registration failed', [
+                'error' => $e->getMessage(),
+                'trace' => $e->getTraceAsString()
+            ]);
+            
             return response()->json([
                 'success' => false,
                 'message' => 'Registration failed',

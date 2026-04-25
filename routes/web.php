@@ -22,6 +22,9 @@ use App\Http\Controllers\Auth\AuthenticatedSessionController;
 
 Route::get('/', [WelcomeController::class, 'index']);
 
+// Railway Health Check
+require __DIR__.'/railway-health.php';
+
 // Database test route for Railway deployment
 Route::get('/db-test', function () {
     try {

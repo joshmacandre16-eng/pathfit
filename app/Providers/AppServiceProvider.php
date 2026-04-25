@@ -23,15 +23,16 @@ class AppServiceProvider extends ServiceProvider
     {
         Schema::defaultStringLength(191);
         
-        if (config('app.env') === 'local') {
-            try {
+        try {
+            // Auto-migrate and seed for production (Railway) or local environments
+            if (in_array(config('app.env'), ['production', 'local'])) {
                 if (!Schema::hasTable('users')) {
                     Artisan::call('migrate', ['--force' => true]);
                     Artisan::call('db:seed', ['--force' => true]);
                 }
-            } catch (\Exception $e) {
-                // Silently fail if database not ready
             }
+        } catch (\Exception $e) {
+            // Silently fail if database not ready
         }
     }
 }
