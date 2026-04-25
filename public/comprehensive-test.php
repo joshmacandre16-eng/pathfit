@@ -388,7 +388,9 @@ $redirectTests = [
 
 foreach ($redirectTests as $role => $expectedPath) {
     runTest("{$role} redirect path", function() use ($role, $expectedPath) {
-        $url = route(strtolower($role) . '.dashboard');
+        // Map role names to route prefixes
+        $routePrefix = $role === 'Administrator' ? 'admin' : strtolower($role);
+        $url = route($routePrefix . '.dashboard');
         if (strpos($url, $expectedPath) !== false) {
             return ['status' => 'pass', 'details' => $url];
         }
