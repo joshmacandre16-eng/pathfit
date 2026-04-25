@@ -35,28 +35,67 @@ $actualStorage = dirname(__DIR__) . '/storage/app/public';
     <h1>🖼️ Storage Image Display Test</h1>
     
     <div class="status">
-        <h3>Storage Link Status:</h3>
-        <?php if (is_link($publicStorage)): ?>
-            <?php 
-                $target = readlink($publicStorage);
-                $isCorrect = (realpath($target) === realpath($actualStorage));
-            ?>
-            <span class="pass">✅ Symlink EXISTS</span><br>
-            <small>Points to: <?= $target ?></small><br>
-            <?php if ($isCorrect): ?>
-                <span class="pass">✅ php artisan storage:link was EXECUTED successfully</span>
-            <?php else: ?>
-                <span class="warn">⚠️ Symlink exists but points to wrong location</span>
+        <h3>📋 Storage Link Verification:</h3>
+        <?php 
+        $linkExists = is_link($publicStorage);
+        $storageExists = file_exists($publicStorage);
+        $targetExists = is_dir($actualStorage);
+        $isExecuted = false;
+        $statusMessage = '';
+        
+        if ($linkExists) {
+            $target = readlink($publicStorage);
+            $targetReal = realpath($target);
+            $actualReal = realpath($actualStorage);
+            $isCorrect = ($targetReal === $actualReal);
+            
+            if ($isCorrect) {
+                $isExecuted = true;
+                $statusMessage = '<span class="pass">✅ VERIFIED: php artisan storage:link WAS EXECUTED</span>';
+            } else {
+                $statusMessage = '<span class="warn">⚠️ Symlink exists but points to WRONG location</span>';
+            }
+        } elseif ($storageExists && is_dir($publicStorage)) {
+            $statusMessage = '<span class="fail">❌ FAILED: \'storage\' is a regular DIRECTORY (not a symlink)</span>';
+        } else {
+            $statusMessage = '<span class="fail">❌ FAILED: Symlink does NOT exist</span>';
+        }
+        
+        echo $statusMessage;
+        ?>
+    </div>
+    
+    <div class="status">
+        <h3>🔍 Detailed Check:</h3>
+        <table style="width:100%; border-collapse: collapse;">
+            <tr style="border-bottom: 1px solid #eee;">
+                <td style="padding: 8px; font-weight: bold;">Check</td>
+                <td style="padding: 8px; font-weight: bold;">Status</td>
+                <td style="padding: 8px; font-weight: bold;">Details</td>
+            </tr>
+            <tr style="border-bottom: 1px solid #eee;">
+                <td style="padding: 8px;">Symlink Exists</td>
+                <td style="padding: 8px;"><?= $linkExists ? '<span class="pass">✅ YES</span>' : '<span class="fail">❌ NO</span>' ?></td>
+                <td style="padding: 8px;"><?= $linkExists ? 'Found at: ' . $publicStorage : 'Not found' ?></td>
+            </tr>
+            <tr style="border-bottom: 1px solid #eee;">
+                <td style="padding: 8px;">Target Directory</td>
+                <td style="padding: 8px;"><?= $targetExists ? '<span class="pass">✅ EXISTS</span>' : '<span class="fail">❌ MISSING</span>' ?></td>
+                <td style="padding: 8px;"><?= $actualStorage ?></td>
+            </tr>
+            <?php if ($linkExists): ?>
+            <tr style="border-bottom: 1px solid #eee;">
+                <td style="padding: 8px;">Link Target</td>
+                <td style="padding: 8px;"><?= $isCorrect ? '<span class="pass">✅ CORRECT</span>' : '<span class="warn">⚠️ WRONG</span>' ?></td>
+                <td style="padding: 8px;"><?= readlink($publicStorage) ?></td>
+            </tr>
             <?php endif; ?>
-        <?php elseif (is_dir($publicStorage)): ?>
-            <span class="fail">❌ 'storage' is a DIRECTORY, not a symlink</span><br>
-            <span class="fail">❌ php artisan storage:link was NOT executed</span><br>
-            <small>Delete the 'storage' folder and run storage-link.php</small>
-        <?php else: ?>
-            <span class="fail">❌ Symlink NOT FOUND</span><br>
-            <span class="fail">❌ php artisan storage:link was NOT executed</span><br>
-            <small>Run storage-link.php or execute: php artisan storage:link</small>
-        <?php endif; ?>
+            <tr style="border-bottom: 1px solid #eee;">
+                <td style="padding: 8px; font-weight: bold;">Command Executed</td>
+                <td style="padding: 8px; font-weight: bold;"><?= $isExecuted ? '<span class="pass">✅ YES</span>' : '<span class="fail">❌ NO</span>' ?></td>
+                <td style="padding: 8px;"><?= $isExecuted ? 'Storage link is working' : 'Run storage-link.php' ?></td>
+            </tr>
+        </table>
     </div>
 
     <?php
