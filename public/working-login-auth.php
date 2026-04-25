@@ -22,11 +22,6 @@ button:hover { background: #0ea572; }
 .link { text-align: center; margin-top: 20px; font-size: 13px; }
 .link a { color: #10b981; text-decoration: none; }
 .link a:hover { text-decoration: underline; }
-.result { background: #0D0F0A; padding: 20px; border-radius: 5px; margin-top: 20px; border: 1px solid #10b981; }
-.result h3 { color: #10b981; margin-bottom: 15px; font-size: 18px; }
-.result p { font-size: 14px; margin: 8px 0; }
-.result .redirect-btn { display: inline-block; margin-top: 15px; padding: 10px 20px; background: #10b981; color: #0D0F0A; text-decoration: none; border-radius: 5px; font-weight: bold; }
-.result .redirect-btn:hover { background: #0ea572; }
 </style>
 </head>
 <body>
@@ -38,7 +33,6 @@ button:hover { background: #0ea572; }
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
-$result = null;
 $error = null;
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -54,37 +48,24 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if (empty($email) || empty($password)) {
             $error = 'Email and password are required.';
         } else {
-            // Find user
-            $user = DB::table('users')->where('email', $email)->first();
-            
-            if ($user && Hash::check($password, $user->password)) {
-                // Login successful
-                $dashboardUrl = '';
-                $welcomeMsg = '';
+            // Attempt Laravel authentication
+            if (Auth::attempt(['email' => $email, 'password' => $password])) {
+                $user = Auth::user();
                 
+                // Redirect based on role
                 switch ($user->role) {
                     case 'Administrator':
-                        $dashboardUrl = '/admin/dashboard';
-                        $welcomeMsg = 'Welcome back, Administrator!';
-                        break;
+                        header('Location: /admin/dashboard');
+                        exit;
                     case 'Athlete':
-                        $dashboardUrl = '/athlete/dashboard';
-                        $welcomeMsg = 'Welcome back, ' . $user->fname . '!';
-                        break;
+                        header('Location: /athlete/dashboard');
+                        exit;
                     case 'Coach':
-                        $dashboardUrl = '/coach/dashboard';
-                        $welcomeMsg = 'Welcome back, Coach ' . $user->lname . '!';
-                        break;
+                        header('Location: /coach/dashboard');
+                        exit;
                     default:
+                        Auth::logout();
                         $error = 'Unauthorized role. Please contact administrator.';
-                }
-                
-                if ($dashboardUrl) {
-                    $result = [
-                        'user' => $user,
-                        'dashboard' => $dashboardUrl,
-                        'message' => $welcomeMsg
-                    ];
                 }
             } else {
                 $error = 'Invalid email or password. Please try again.';
@@ -96,25 +77,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 ?>
-
-<?php if ($result): ?>
-<div class="alert alert-success">
-    ✓ Login successful! Redirecting...
-</div>
-<div class="result">
-    <h3><?= htmlspecialchars($result['message']) ?></h3>
-    <p><strong>Name:</strong> <?= htmlspecialchars($result['user']->name) ?></p>
-    <p><strong>Email:</strong> <?= htmlspecialchars($result['user']->email) ?></p>
-    <p><strong>Role:</strong> <?= htmlspecialchars($result['user']->role) ?></p>
-    <p><strong>Dashboard:</strong> <?= htmlspecialchars($result['dashboard']) ?></p>
-    <p style="color: #10b981; margin-top: 10px;">Redirecting to dashboard in 2 seconds...</p>
-</div>
-<script>
-setTimeout(function() {
-    window.location.href = '<?= $result['dashboard'] ?>';
-}, 2000);
-</script>
-<?php else: ?>
 
 <?php if ($error): ?>
 <div class="alert alert-error"><?= htmlspecialchars($error) ?></div>
@@ -137,7 +99,6 @@ setTimeout(function() {
 <div class="link">
     Don't have an account? <a href="working-register.php">Register</a>
 </div>
-<?php endif; ?>
 
 </div>
 </body>
