@@ -20,24 +20,27 @@ class LoginController extends Controller
             'password' => 'required|min:8',
         ]);
 
-        if (Auth::attempt($request->only('email', 'password'))) {
+        if (Auth::attempt($request->only('email', 'password'), $request->filled('remember'))) {
+            $request->session()->regenerate();
             $user = Auth::user();
 
             // Redirect based on role
             switch ($user->role) {
                 case 'Administrator':
-                    return redirect()->route('admin.dashboard')->with('success', 'Welcome back, Administrator!');
+                    return redirect()->intended(route('admin.dashboard'))->with('success', 'Welcome back, Administrator!');
                 case 'Athlete':
-                    return redirect()->route('athlete.dashboard')->with('success', 'Welcome back, ' . $user->fname . '!');
+                    return redirect()->intended(route('athlete.dashboard'))->with('success', 'Welcome back, ' . $user->fname . '!');
                 case 'Coach':
-                    return redirect()->route('coach.dashboard')->with('success', 'Welcome back, Coach ' . $user->lname . '!');
+                    return redirect()->intended(route('coach.dashboard'))->with('success', 'Welcome back, Coach ' . $user->lname . '!');
                 default:
                     Auth::logout();
-                    return redirect()->back()->with('error', 'Unauthorized role. Please contact administrator.');
+                    $request->session()->invalidate();
+                    $request->session()->regenerateToken();
+                    return redirect()->route('login')->with('error', 'Unauthorized role. Please contact administrator.');
             }
         }
 
-        return redirect()->back()->withInput()->with('error', 'Invalid email or password. Please try again.');
+        return redirect()->back()->withInput($request->only('email'))->with('error', 'Invalid email or password. Please try again.');
     }
 
     public function logout(Request $request)
