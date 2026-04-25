@@ -23,4 +23,4 @@ RUN npm run build && \
     mkdir -p bootstrap/cache && \
     chmod -R 775 storage bootstrap/cache
 
-CMD php artisan serve --host=0.0.0.0 --port=$PORT
+CMD sh -c "php artisan serve --host=0.0.0.0 --port=${PORT:-8000}"
