@@ -15,16 +15,16 @@ class SportRequirementSeeder extends Seeder
         $sports = SportAvailable::pluck('id')->toArray();
         
         if (empty($coaches) || empty($sports)) {
-            return; // Skip if no coaches or sports exist
+            return;
         }
 
         $requirements = [
             [
                 'coach_id' => $coaches[0] ?? 1,
-                'sport_available_id' => $sports[0] ?? 1, // Basketball
+                'sport_available_id' => $sports[0] ?? 1,
                 'min_age' => 16,
                 'max_age' => 25,
-                'required_gender' => null,
+                'required_gender' => 'both',
                 'min_height' => 160.0,
                 'max_height' => 220.0,
                 'min_weight' => 50.0,
@@ -37,7 +37,7 @@ class SportRequirementSeeder extends Seeder
             ],
             [
                 'coach_id' => $coaches[1] ?? $coaches[0],
-                'sport_available_id' => $sports[1] ?? $sports[0], // Football
+                'sport_available_id' => $sports[1] ?? $sports[0],
                 'min_age' => 18,
                 'max_age' => 30,
                 'required_gender' => 'male',
@@ -53,10 +53,10 @@ class SportRequirementSeeder extends Seeder
             ],
             [
                 'coach_id' => $coaches[0] ?? 1,
-                'sport_available_id' => $sports[2] ?? $sports[0], // Swimming
+                'sport_available_id' => $sports[2] ?? $sports[0],
                 'min_age' => 14,
                 'max_age' => 35,
-                'required_gender' => null,
+                'required_gender' => 'both',
                 'min_height' => 150.0,
                 'max_height' => 200.0,
                 'min_weight' => 40.0,
@@ -69,10 +69,10 @@ class SportRequirementSeeder extends Seeder
             ],
             [
                 'coach_id' => $coaches[2] ?? $coaches[0],
-                'sport_available_id' => $sports[3] ?? $sports[0], // Tennis
+                'sport_available_id' => $sports[3] ?? $sports[0],
                 'min_age' => 12,
                 'max_age' => 40,
-                'required_gender' => null,
+                'required_gender' => 'both',
                 'min_height' => 140.0,
                 'max_height' => 210.0,
                 'min_weight' => 35.0,
@@ -85,10 +85,10 @@ class SportRequirementSeeder extends Seeder
             ],
             [
                 'coach_id' => $coaches[1] ?? $coaches[0],
-                'sport_available_id' => $sports[4] ?? $sports[0], // Track and Field
+                'sport_available_id' => $sports[4] ?? $sports[0],
                 'min_age' => 15,
                 'max_age' => 28,
-                'required_gender' => null,
+                'required_gender' => 'both',
                 'min_height' => 150.0,
                 'max_height' => 200.0,
                 'min_weight' => 45.0,
@@ -101,10 +101,10 @@ class SportRequirementSeeder extends Seeder
             ],
             [
                 'coach_id' => $coaches[0] ?? 1,
-                'sport_available_id' => $sports[5] ?? $sports[0], // Volleyball
+                'sport_available_id' => $sports[5] ?? $sports[0],
                 'min_age' => 16,
                 'max_age' => 30,
-                'required_gender' => null,
+                'required_gender' => 'both',
                 'min_height' => 160.0,
                 'max_height' => 210.0,
                 'min_weight' => 50.0,
@@ -117,10 +117,10 @@ class SportRequirementSeeder extends Seeder
             ],
             [
                 'coach_id' => $coaches[2] ?? $coaches[0],
-                'sport_available_id' => $sports[6] ?? $sports[0], // Badminton
+                'sport_available_id' => $sports[6] ?? $sports[0],
                 'min_age' => 10,
                 'max_age' => 45,
-                'required_gender' => null,
+                'required_gender' => 'both',
                 'min_height' => 130.0,
                 'max_height' => 200.0,
                 'min_weight' => 30.0,
@@ -133,10 +133,10 @@ class SportRequirementSeeder extends Seeder
             ],
             [
                 'coach_id' => $coaches[1] ?? $coaches[0],
-                'sport_available_id' => $sports[7] ?? $sports[0], // Table Tennis
+                'sport_available_id' => $sports[7] ?? $sports[0],
                 'min_age' => 8,
                 'max_age' => 50,
-                'required_gender' => null,
+                'required_gender' => 'both',
                 'min_height' => 120.0,
                 'max_height' => 200.0,
                 'min_weight' => 25.0,
@@ -149,10 +149,10 @@ class SportRequirementSeeder extends Seeder
             ],
             [
                 'coach_id' => $coaches[0] ?? 1,
-                'sport_available_id' => $sports[8] ?? $sports[0], // Boxing
+                'sport_available_id' => $sports[8] ?? $sports[0],
                 'min_age' => 18,
                 'max_age' => 35,
-                'required_gender' => null,
+                'required_gender' => 'both',
                 'min_height' => 150.0,
                 'max_height' => 200.0,
                 'min_weight' => 50.0,
@@ -165,10 +165,10 @@ class SportRequirementSeeder extends Seeder
             ],
             [
                 'coach_id' => $coaches[2] ?? $coaches[0],
-                'sport_available_id' => $sports[9] ?? $sports[0], // Martial Arts
+                'sport_available_id' => $sports[9] ?? $sports[0],
                 'min_age' => 12,
                 'max_age' => 60,
-                'required_gender' => null,
+                'required_gender' => 'both',
                 'min_height' => 130.0,
                 'max_height' => 200.0,
                 'min_weight' => 35.0,
