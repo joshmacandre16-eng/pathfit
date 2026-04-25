@@ -21,6 +21,7 @@ RUN npm run build && \
     mkdir -p storage/framework/{sessions,views,cache} && \
     mkdir -p storage/logs && \
     mkdir -p bootstrap/cache && \
-    chmod -R 775 storage bootstrap/cache
+    chmod -R 775 storage bootstrap/cache && \
+    php artisan storage:link
 
 CMD sh -c "php artisan serve --host=0.0.0.0 --port=${PORT:-8000}"
