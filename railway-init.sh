@@ -1,13 +1,17 @@
 #!/bin/bash
 set -e
 
+echo "Starting deployment..."
+
+echo "Clearing caches..."
+php artisan optimize:clear || true
+
 echo "Running database migrations..."
-php artisan migrate --force
+php artisan migrate --force || echo "Migration failed, continuing..."
 
 echo "Caching configurations..."
-php artisan optimize:clear
-php artisan config:cache
-php artisan route:cache
-php artisan view:cache
+php artisan config:cache || true
+php artisan route:cache || true
+php artisan view:cache || true
 
-echo "Deployment completed successfully!"
+echo "Deployment completed!"
