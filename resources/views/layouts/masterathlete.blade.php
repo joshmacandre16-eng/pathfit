@@ -593,7 +593,7 @@
 
         .sidebar-user-role {
             font-size: 12px;
-            color: #10b981;
+            color: #0eaa76;
             font-weight: 500;
             margin-top: 2px;
         }

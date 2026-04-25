@@ -689,7 +689,7 @@
 
         .nav-link.active i {
             opacity: 1;
-            color: #10b981;
+            color: #14b680;
         }
 
         /* Sidebar Footer */

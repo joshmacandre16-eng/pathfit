@@ -13,7 +13,7 @@ class RegisterController extends Controller
 {
     public function registerread(Request $request)
     {
-        return view('register');
+        return view('auth.register');
     }
 
     public function register(Request $request)
@@ -54,7 +54,7 @@ class RegisterController extends Controller
             
             DB::commit();
 
-            return redirect()->route('login.form')->with('success', 'Registration successful! Please login to continue.');
+            return redirect()->route('login')->with('success', 'Registration successful! Please login to continue.');
         } catch (\Exception $e) {
             DB::rollBack();
             Log::error('Registration error: ' . $e->getMessage(), [

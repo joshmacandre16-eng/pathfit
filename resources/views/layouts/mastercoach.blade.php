@@ -855,7 +855,7 @@
 
         /* Dark Mode Support */
         body.dark-mode {
-            --bg: #121826;
+            --bg: #0b0c0f;
             --surface: #1a1f2e;
             --border: #2a2f3f;
             --text: #e2e8f0;

@@ -658,7 +658,9 @@ class UserController extends Controller
 
         // Position requirements
         $userPosition = strtolower($user->position_role ?? '');
-        $requiredPositions = array_map('strtolower', $requirement->required_positions ?? []);
+        $requiredPositions = is_array($requirement->required_positions) 
+            ? array_map('strtolower', $requirement->required_positions) 
+            : (is_string($requirement->required_positions) ? json_decode($requirement->required_positions, true) ?? [] : []);
         if (!empty($requiredPositions) && in_array($userPosition, $requiredPositions)) {
             $score += 20;
             $reasons[] = 'Matches coach\'s position requirements';
