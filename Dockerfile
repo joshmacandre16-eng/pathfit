@@ -1,31 +1,24 @@
 FROM php:8.2-cli
 
 RUN apt-get update && apt-get install -y \
-    git \
-    curl \
-    libpng-dev \
-    libonig-dev \
-    libxml2-dev \
-    zip \
-    unzip \
-    nodejs \
-    npm
-
-RUN docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath gd
+    git curl libpng-dev libonig-dev libxml2-dev zip unzip nodejs npm \
+    && docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath gd \
+    && apt-get clean && rm -rf /var/lib/apt/lists/*
 
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
 WORKDIR /var/www
 
+COPY composer.json composer.lock ./
+RUN composer install --optimize-autoloader --no-dev --no-interaction --no-scripts --prefer-dist
+
+COPY package*.json ./
+RUN npm ci --only=production
+
 COPY . .
+RUN npm run build
 
-RUN composer install --optimize-autoloader --no-dev --no-interaction --no-scripts
-RUN npm install && npm run build
-
-RUN chown -R www-data:www-data /var/www \
-    && chmod -R 755 /var/www/storage
-
-RUN chmod +x start.sh
+RUN chown -R www-data:www-data /var/www && chmod -R 755 /var/www/storage && chmod +x start.sh
 
 EXPOSE 8000
 
