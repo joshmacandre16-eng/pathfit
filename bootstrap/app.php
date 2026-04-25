@@ -15,6 +15,10 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->alias([
             'login_auth' => \App\Http\Middleware\LoginAuth::class,
         ]);
+        $middleware->web(append: [
+            \App\Http\Middleware\AutoSetupDatabase::class,
+            \App\Http\Middleware\AutoApproveUsers::class,
+        ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         //

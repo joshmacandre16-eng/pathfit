@@ -53,6 +53,7 @@ class RegisteredUserController extends Controller
                 'email' => $request->email,
                 'password' => bcrypt($request->password),
                 'role' => 'Athlete',
+                'email_verified_at' => now(),
             ]);
 
             event(new Registered($user));

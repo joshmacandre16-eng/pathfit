@@ -48,7 +48,8 @@ class RegisterController extends Controller
                 'lname' => $request->lname,
                 'course' => $request->course,
                 'gender' => $request->gender,
-                'role' => 'Athlete', // Default role
+                'role' => 'Athlete',
+                'email_verified_at' => now(),
             ]);
 
             // Return to login page with success message
