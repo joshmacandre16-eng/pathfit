@@ -20,6 +20,7 @@ RUN npm run build
 
 RUN chown -R www-data:www-data /var/www && chmod -R 755 /var/www/storage && chmod +x start.sh
 
-EXPOSE 8000
+ENV PORT=8000
+EXPOSE $PORT
 
 CMD ["bash", "start.sh"]
