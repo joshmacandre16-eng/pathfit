@@ -16,11 +16,11 @@ COPY package*.json ./
 RUN npm ci
 
 COPY . .
-RUN npm run build
 
-RUN chown -R www-data:www-data /var/www && chmod -R 755 /var/www/storage && chmod +x start.sh
+RUN npm run build && \
+    mkdir -p storage/framework/{sessions,views,cache} && \
+    mkdir -p storage/logs && \
+    mkdir -p bootstrap/cache && \
+    chmod -R 775 storage bootstrap/cache
 
-ENV PORT=8000
-EXPOSE $PORT
-
-CMD ["bash", "start.sh"]
+CMD php artisan serve --host=0.0.0.0 --port=${PORT:-8000}
