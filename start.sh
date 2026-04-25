@@ -3,9 +3,8 @@ set -e
 
 PORT=${PORT:-8000}
 
-php artisan config:cache
-php artisan route:cache
-php artisan view:cache
-php artisan migrate --force
+echo "Starting application on port $PORT"
+
+php artisan migrate --force || echo "Migration failed, continuing..."
 
 exec php artisan serve --host=0.0.0.0 --port=$PORT
