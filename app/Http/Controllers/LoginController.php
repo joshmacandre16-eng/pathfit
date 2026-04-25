@@ -20,27 +20,36 @@ class LoginController extends Controller
             'password' => 'required|min:8',
         ]);
 
-        if (Auth::attempt($request->only('email', 'password'), $request->filled('remember'))) {
+        $credentials = $request->only('email', 'password');
+        $remember = $request->filled('remember');
+
+        if (Auth::attempt($credentials, $remember)) {
             $request->session()->regenerate();
             $user = Auth::user();
 
             // Redirect based on role
-            switch ($user->role) {
-                case 'Administrator':
-                    return redirect()->intended(route('admin.dashboard'))->with('success', 'Welcome back, Administrator!');
-                case 'Athlete':
-                    return redirect()->intended(route('athlete.dashboard'))->with('success', 'Welcome back, ' . $user->fname . '!');
-                case 'Coach':
-                    return redirect()->intended(route('coach.dashboard'))->with('success', 'Welcome back, Coach ' . $user->lname . '!');
-                default:
-                    Auth::logout();
-                    $request->session()->invalidate();
-                    $request->session()->regenerateToken();
-                    return redirect()->route('login')->with('error', 'Unauthorized role. Please contact administrator.');
-            }
+            return match($user->role) {
+                'Administrator' => redirect()->intended(route('admin.dashboard'))
+                    ->with('success', 'Welcome back, Administrator!'),
+                'Athlete' => redirect()->intended(route('athlete.dashboard'))
+                    ->with('success', 'Welcome back, ' . $user->fname . '!'),
+                'Coach' => redirect()->intended(route('coach.dashboard'))
+                    ->with('success', 'Welcome back, Coach ' . $user->lname . '!'),
+                default => $this->handleInvalidRole($request)
+            };
         }
 
-        return redirect()->back()->withInput($request->only('email'))->with('error', 'Invalid email or password. Please try again.');
+        return back()->withInput($request->only('email'))
+            ->with('error', 'Invalid email or password. Please try again.');
+    }
+
+    private function handleInvalidRole(Request $request)
+    {
+        Auth::logout();
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+        return redirect()->route('login')
+            ->with('error', 'Unauthorized role. Please contact administrator.');
     }
 
     public function logout(Request $request)

@@ -17,22 +17,19 @@ class LoginAuth
         $user = Auth::user();
         $routeName = $request->route()->getName();
 
-        // Define role-based access
-        $rolePermissions = [
-            'admin.dashboard' => ['Administrator'],
-            'admin.users.index' => ['Administrator'],
-            'admin.users.create' => ['Administrator'],
-            'admin.users.store' => ['Administrator'],
-            'admin.users.edit' => ['Administrator'],
-            'admin.users.update' => ['Administrator'],
-            'admin.users.destroy' => ['Administrator'],
-            'athlete.dashboard' => ['Athlete'],
-            'coach.dashboard' => ['Coach'],
-        ];
+        // Role-based route access control
+        if (str_starts_with($routeName, 'admin.') && $user->role !== 'Administrator') {
+            return redirect()->route('athlete.dashboard')->with('error', 'Unauthorized access.');
+        }
 
-        if (isset($rolePermissions[$routeName]) && !in_array($user->role, $rolePermissions[$routeName])) {
-            Auth::logout();
-            return redirect()->route('login')->with('error', 'Unauthorized access.');
+        if (str_starts_with($routeName, 'athlete.') && $user->role !== 'Athlete') {
+            return redirect()->route($user->role === 'Administrator' ? 'admin.dashboard' : 'coach.dashboard')
+                ->with('error', 'Unauthorized access.');
+        }
+
+        if (str_starts_with($routeName, 'coach.') && $user->role !== 'Coach') {
+            return redirect()->route($user->role === 'Administrator' ? 'admin.dashboard' : 'athlete.dashboard')
+                ->with('error', 'Unauthorized access.');
         }
 
         return $next($request);

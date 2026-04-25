@@ -23,8 +23,15 @@ class RedirectIfAuthenticated
 
         foreach ($guards as $guard) {
             if (Auth::guard($guard)->check()) {
-                //return redirect(RouteServiceProvider::HOME);
-                return redirect()->route('index');
+                $user = Auth::guard($guard)->user();
+                
+                // Redirect authenticated users to their dashboard
+                return match($user->role) {
+                    'Administrator' => redirect()->route('admin.dashboard'),
+                    'Athlete' => redirect()->route('athlete.dashboard'),
+                    'Coach' => redirect()->route('coach.dashboard'),
+                    default => redirect()->route('login')
+                };
             }
         }
 

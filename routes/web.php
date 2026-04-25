@@ -52,10 +52,15 @@ Route::get('/disclaimer/{slug?}', [PrivacyController::class, 'disclaimer'])->nam
 Route::get('/contact/{slug?}', [PrivacyController::class, 'contact'])->name('contact');
 
 // Authentication routes
-Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');
-Route::post('/login', [LoginController::class, 'login'])->name('login.submit');
-Route::get('/register', [RegisterController::class, 'registerread'])->name('register');
-Route::post('/register', [RegisterController::class, 'register'])->name('register.submit');
+Route::middleware('guest')->group(function () {
+    Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');
+    Route::post('/login', [LoginController::class, 'login'])->name('login.submit');
+    Route::get('/register', [RegisterController::class, 'registerread'])->name('register');
+    Route::post('/register', [RegisterController::class, 'register'])->name('register.submit');
+});
+
+// Logout route
+Route::post('/logout', [LoginController::class, 'logout'])->middleware('auth')->name('logout');
 
 
 // Protected routes
