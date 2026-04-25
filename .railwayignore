@@ -1,0 +1,11 @@
+tests/
+.phpunit.result.cache
+phpunit.xml
+node_modules/
+.git/
+.env.example
+README*.md
+*.md
+backend/
+gh/
+gh.zip
