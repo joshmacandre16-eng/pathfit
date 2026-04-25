@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PathFit Registration Tester</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #0D0F0A;
+            color: #E8EDE0;
+            padding: 40px 20px;
+            line-height: 1.6;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        h1 {
+            color: #10b981;
+            margin-bottom: 10px;
+            font-size: 32px;
+        }
+        .subtitle {
+            color: #8A9480;
+            margin-bottom: 40px;
+        }
+        .test-section {
+            background: #1E2418;
+            border: 1px solid rgba(16, 185, 129, 0.2);
+            border-radius: 12px;
+            padding: 30px;
+            margin-bottom: 30px;
+        }
+        h2 {
+            color: #10b981;
+            margin-bottom: 20px;
+            font-size: 24px;
+        }
+        .url-list {
+            list-style: none;
+            margin-bottom: 30px;
+        }
+        .url-list li {
+            background: rgba(16, 185, 129, 0.1);
+            border: 1px solid rgba(16, 185, 129, 0.3);
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 15px;
+        }
+        .url-list strong {
+            color: #10b981;
+            display: block;
+            margin-bottom: 8px;
+        }
+        .url-list a {
+            color: #3ce2ee;
+            text-decoration: none;
+            word-break: break-all;
+        }
+        .url-list a:hover {
+            text-decoration: underline;
+        }
+        .test-data {
+            background: rgba(200, 241, 53, 0.05);
+            border: 1px solid rgba(200, 241, 53, 0.2);
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        .test-data h3 {
+            color: #10b981;
+            margin-bottom: 15px;
+            font-size: 18px;
+        }
+        .field {
+            display: grid;
+            grid-template-columns: 150px 1fr;
+            gap: 15px;
+            margin-bottom: 10px;
+            padding: 8px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        .field:last-child {
+            border-bottom: none;
+        }
+        .field-label {
+            color: #8A9480;
+            font-weight: 500;
+        }
+        .field-value {
+            color: #E8EDE0;
+            font-family: 'Courier New', monospace;
+        }
+        .instructions {
+            background: rgba(16, 185, 129, 0.08);
+            border-left: 4px solid #10b981;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 4px;
+        }
+        .instructions h3 {
+            color: #10b981;
+            margin-bottom: 12px;
+            font-size: 18px;
+        }
+        .instructions ol {
+            margin-left: 20px;
+            color: #E8EDE0;
+        }
+        .instructions li {
+            margin-bottom: 8px;
+        }
+        .status-box {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            padding: 20px;
+            margin-top: 20px;
+        }
+        .status-box h3 {
+            color: #10b981;
+            margin-bottom: 15px;
+            font-size: 18px;
+        }
+        .status-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 10px;
+            padding: 10px;
+            background: rgba(255, 255, 255, 0.02);
+            border-radius: 6px;
+        }
+        .status-icon {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            flex-shrink: 0;
+        }
+        .status-icon.pending {
+            background: rgba(255, 193, 7, 0.2);
+            color: #ffc107;
+        }
+        .status-icon.success {
+            background: rgba(16, 185, 129, 0.2);
+            color: #10b981;
+        }
+        .status-icon.error {
+            background: rgba(220, 53, 69, 0.2);
+            color: #dc3545;
+        }
+        .btn {
+            display: inline-block;
+            background: #10b981;
+            color: #0D0F0A;
+            padding: 12px 24px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.2s;
+            border: none;
+            cursor: pointer;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .btn:hover {
+            background: #059669;
+            transform: translateY(-2px);
+        }
+        .btn-group {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            margin-top: 20px;
+        }
+        .warning {
+            background: rgba(255, 193, 7, 0.1);
+            border: 1px solid rgba(255, 193, 7, 0.3);
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 20px;
+            color: #ffc107;
+        }
+        .warning strong {
+            display: block;
+            margin-bottom: 8px;
+        }
+        @media (max-width: 768px) {
+            .field {
+                grid-template-columns: 1fr;
+                gap: 5px;
+            }
+            h1 { font-size: 24px; }
+            h2 { font-size: 20px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🏃 PathFit Registration Tester</h1>
+        <p class="subtitle">Test registration functionality on both production domains</p>
+
+        <div class="test-section">
+            <h2>📍 Registration URLs</h2>
+            <ul class="url-list">
+                <li>
+                    <strong>Primary Domain:</strong>
+                    <a href="https://pathfit.online/register" target="_blank">https://pathfit.online/register</a>
+                </li>
+                <li>
+                    <strong>Railway Domain:</strong>
+                    <a href="https://pathfit-production.up.railway.app/register" target="_blank">https://pathfit-production.up.railway.app/register</a>
+                </li>
+                <li>
+                    <strong>Localhost (if running):</strong>
+                    <a href="http://localhost:8000/register" target="_blank">http://localhost:8000/register</a>
+                </li>
+            </ul>
+        </div>
+
+        <div class="test-section">
+            <h2>📝 Test Data</h2>
+            <div class="test-data">
+                <h3>Use this data to test registration:</h3>
+                <div class="field">
+                    <div class="field-label">First Name:</div>
+                    <div class="field-value">John</div>
+                </div>
+                <div class="field">
+                    <div class="field-label">Middle Name:</div>
+                    <div class="field-value">Michael (optional)</div>
+                </div>
+                <div class="field">
+                    <div class="field-label">Last Name:</div>
+                    <div class="field-value">Doe</div>
+                </div>
+                <div class="field">
+                    <div class="field-label">Course:</div>
+                    <div class="field-value">BS Physical Education</div>
+                </div>
+                <div class="field">
+                    <div class="field-label">Gender:</div>
+                    <div class="field-value">Male</div>
+                </div>
+                <div class="field">
+                    <div class="field-label">Email:</div>
+                    <div class="field-value">test_<span id="timestamp"></span>@example.com</div>
+                </div>
+                <div class="field">
+                    <div class="field-label">Password:</div>
+                    <div class="field-value">password123</div>
+                </div>
+                <div class="field">
+                    <div class="field-label">Confirm Password:</div>
+                    <div class="field-value">password123</div>
+                </div>
+            </div>
+
+            <div class="warning">
+                <strong>⚠️ Important:</strong>
+                Use a unique email for each test. The email above includes a timestamp to ensure uniqueness.
+                Current timestamp: <strong><span id="timestamp2"></span></strong>
+            </div>
+        </div>
+
+        <div class="test-section">
+            <h2>📋 Testing Instructions</h2>
+            <div class="instructions">
+                <h3>Step-by-Step Testing Process:</h3>
+                <ol>
+                    <li>Click on one of the registration URLs above</li>
+                    <li>Fill in the registration form with the test data provided</li>
+                    <li>For the email field, use: <strong>test_<span id="timestamp3"></span>@example.com</strong></li>
+                    <li>Click the "Create Account" button</li>
+                    <li>Observe the result and note it below</li>
+                    <li>Repeat for each URL to compare results</li>
+                </ol>
+            </div>
+        </div>
+
+        <div class="test-section">
+            <h2>✅ Expected Results</h2>
+            <div class="status-box">
+                <h3>Successful Registration Should:</h3>
+                <div class="status-item">
+                    <div class="status-icon success">✓</div>
+                    <div>Redirect to login page with success message</div>
+                </div>
+                <div class="status-item">
+                    <div class="status-icon success">✓</div>
+                    <div>Show message: "Registration successful! Please login to continue."</div>
+                </div>
+                <div class="status-item">
+                    <div class="status-icon success">✓</div>
+                    <div>Allow you to login with the registered credentials</div>
+                </div>
+                <div class="status-item">
+                    <div class="status-icon success">✓</div>
+                    <div>Redirect to dashboard after successful login</div>
+                </div>
+            </div>
+
+            <div class="status-box">
+                <h3>Common Error Messages:</h3>
+                <div class="status-item">
+                    <div class="status-icon error">✗</div>
+                    <div><strong>"The email has already been taken."</strong> - Use a different email</div>
+                </div>
+                <div class="status-item">
+                    <div class="status-icon error">✗</div>
+                    <div><strong>"Registration failed. Please try again later."</strong> - Database issue</div>
+                </div>
+                <div class="status-item">
+                    <div class="status-icon error">✗</div>
+                    <div><strong>"500 Server Error"</strong> - Configuration issue</div>
+                </div>
+                <div class="status-item">
+                    <div class="status-icon error">✗</div>
+                    <div><strong>"CSRF token mismatch"</strong> - Session issue</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="test-section">
+            <h2>🔧 Quick Actions</h2>
+            <div class="btn-group">
+                <a href="https://pathfit.online/register" target="_blank" class="btn">Test Primary Domain</a>
+                <a href="https://pathfit-production.up.railway.app/register" target="_blank" class="btn">Test Railway Domain</a>
+                <a href="http://localhost:8000/register" target="_blank" class="btn">Test Localhost</a>
+            </div>
+        </div>
+
+        <div class="test-section">
+            <h2>🐛 Troubleshooting</h2>
+            <div class="instructions">
+                <h3>If registration fails:</h3>
+                <ol>
+                    <li>Check the error message displayed on the page</li>
+                    <li>Open browser console (F12) and check for JavaScript errors</li>
+                    <li>Verify all required fields are filled correctly</li>
+                    <li>Ensure password is at least 8 characters</li>
+                    <li>Ensure password confirmation matches password</li>
+                    <li>Try using a different email address</li>
+                    <li>Check if the database is properly configured</li>
+                    <li>Review the REGISTRATION_TESTING_GUIDE.md file for detailed troubleshooting</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Generate timestamp for unique emails
+        const timestamp = Math.floor(Date.now() / 1000);
+        document.getElementById('timestamp').textContent = timestamp;
+        document.getElementById('timestamp2').textContent = timestamp;
+        document.getElementById('timestamp3').textContent = timestamp;
+    </script>
+</body>
+</html>

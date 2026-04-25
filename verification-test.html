@@ -1,0 +1,663 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PathFit Registration Verification Test</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #0D0F0A 0%, #1a1d14 100%);
+            color: #E8EDE0;
+            padding: 40px 20px;
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        h1 {
+            color: #10b981;
+            margin-bottom: 10px;
+            font-size: 36px;
+            text-align: center;
+        }
+        .subtitle {
+            color: #8A9480;
+            margin-bottom: 40px;
+            text-align: center;
+            font-size: 18px;
+        }
+        .test-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+        .test-card {
+            background: #1E2418;
+            border: 2px solid rgba(16, 185, 129, 0.3);
+            border-radius: 16px;
+            padding: 30px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        }
+        .test-card h2 {
+            color: #10b981;
+            margin-bottom: 20px;
+            font-size: 24px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .domain-badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .badge-primary {
+            background: rgba(16, 185, 129, 0.2);
+            color: #10b981;
+            border: 1px solid #10b981;
+        }
+        .badge-railway {
+            background: rgba(138, 43, 226, 0.2);
+            color: #a78bfa;
+            border: 1px solid #a78bfa;
+        }
+        .test-section {
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        .test-section h3 {
+            color: #10b981;
+            margin-bottom: 15px;
+            font-size: 18px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .test-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            padding: 12px;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 8px;
+            margin-bottom: 10px;
+            border-left: 3px solid transparent;
+        }
+        .test-item.pending {
+            border-left-color: #ffc107;
+        }
+        .test-item.success {
+            border-left-color: #10b981;
+            background: rgba(16, 185, 129, 0.05);
+        }
+        .test-item.error {
+            border-left-color: #dc3545;
+            background: rgba(220, 53, 69, 0.05);
+        }
+        .status-icon {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            flex-shrink: 0;
+            font-size: 14px;
+        }
+        .status-icon.pending {
+            background: rgba(255, 193, 7, 0.2);
+            color: #ffc107;
+        }
+        .status-icon.success {
+            background: rgba(16, 185, 129, 0.2);
+            color: #10b981;
+        }
+        .status-icon.error {
+            background: rgba(220, 53, 69, 0.2);
+            color: #dc3545;
+        }
+        .test-content {
+            flex: 1;
+        }
+        .test-label {
+            font-weight: 600;
+            color: #E8EDE0;
+            margin-bottom: 4px;
+        }
+        .test-detail {
+            font-size: 13px;
+            color: #8A9480;
+        }
+        .btn {
+            display: inline-block;
+            background: #10b981;
+            color: #0D0F0A;
+            padding: 12px 24px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.2s;
+            border: none;
+            cursor: pointer;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-right: 10px;
+            margin-bottom: 10px;
+        }
+        .btn:hover {
+            background: #059669;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+        }
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.1);
+            color: #E8EDE0;
+        }
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.15);
+        }
+        .test-data-box {
+            background: rgba(16, 185, 129, 0.05);
+            border: 1px solid rgba(16, 185, 129, 0.3);
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        .test-data-box h4 {
+            color: #10b981;
+            margin-bottom: 15px;
+            font-size: 16px;
+        }
+        .data-field {
+            display: grid;
+            grid-template-columns: 140px 1fr;
+            gap: 10px;
+            padding: 8px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        .data-field:last-child {
+            border-bottom: none;
+        }
+        .data-label {
+            color: #8A9480;
+            font-size: 13px;
+        }
+        .data-value {
+            color: #E8EDE0;
+            font-family: 'Courier New', monospace;
+            font-size: 13px;
+            word-break: break-all;
+        }
+        .instructions {
+            background: rgba(60, 226, 238, 0.05);
+            border: 1px solid rgba(60, 226, 238, 0.3);
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 30px;
+        }
+        .instructions h3 {
+            color: #3ce2ee;
+            margin-bottom: 15px;
+            font-size: 18px;
+        }
+        .instructions ol {
+            margin-left: 20px;
+            color: #E8EDE0;
+        }
+        .instructions li {
+            margin-bottom: 10px;
+        }
+        .instructions strong {
+            color: #10b981;
+        }
+        .comparison-table {
+            width: 100%;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 10px;
+            overflow: hidden;
+            margin-top: 20px;
+        }
+        .comparison-table th,
+        .comparison-table td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        .comparison-table th {
+            background: rgba(16, 185, 129, 0.1);
+            color: #10b981;
+            font-weight: 600;
+        }
+        .comparison-table tr:last-child td {
+            border-bottom: none;
+        }
+        .alert {
+            padding: 15px 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .alert-info {
+            background: rgba(60, 226, 238, 0.1);
+            border: 1px solid rgba(60, 226, 238, 0.3);
+            color: #3ce2ee;
+        }
+        .alert-success {
+            background: rgba(16, 185, 129, 0.1);
+            border: 1px solid rgba(16, 185, 129, 0.3);
+            color: #10b981;
+        }
+        .alert-warning {
+            background: rgba(255, 193, 7, 0.1);
+            border: 1px solid rgba(255, 193, 7, 0.3);
+            color: #ffc107;
+        }
+        .checklist {
+            list-style: none;
+        }
+        .checklist li {
+            padding: 10px;
+            margin-bottom: 8px;
+            background: rgba(255, 255, 255, 0.02);
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .checklist input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+        }
+        @media (max-width: 768px) {
+            .test-grid {
+                grid-template-columns: 1fr;
+            }
+            h1 { font-size: 28px; }
+            .data-field {
+                grid-template-columns: 1fr;
+                gap: 5px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔍 PathFit Registration Verification</h1>
+        <p class="subtitle">Double-check that both domains are working correctly with the same Railway database</p>
+
+        <div class="alert alert-info">
+            <span style="font-size: 24px;">ℹ️</span>
+            <div>
+                <strong>Purpose:</strong> This test verifies that both pathfit.online and Railway deployment are storing data in the same database.
+            </div>
+        </div>
+
+        <div class="instructions">
+            <h3>📋 Testing Instructions</h3>
+            <ol>
+                <li>Test registration on <strong>pathfit.online</strong> first</li>
+                <li>Test registration on <strong>Railway deployment</strong> second</li>
+                <li>Try logging in with the first account on the second domain</li>
+                <li>Check the verification checklist at the bottom</li>
+            </ol>
+        </div>
+
+        <div class="test-grid">
+            <!-- Domain 1: pathfit.online -->
+            <div class="test-card">
+                <h2>
+                    <span>🌐</span>
+                    pathfit.online
+                    <span class="domain-badge badge-primary">Primary</span>
+                </h2>
+
+                <div class="test-data-box">
+                    <h4>Test User #1 Data</h4>
+                    <div class="data-field">
+                        <div class="data-label">First Name:</div>
+                        <div class="data-value">Alice</div>
+                    </div>
+                    <div class="data-field">
+                        <div class="data-label">Last Name:</div>
+                        <div class="data-value">Johnson</div>
+                    </div>
+                    <div class="data-field">
+                        <div class="data-label">Course:</div>
+                        <div class="data-value">BS Physical Education</div>
+                    </div>
+                    <div class="data-field">
+                        <div class="data-label">Gender:</div>
+                        <div class="data-value">Female</div>
+                    </div>
+                    <div class="data-field">
+                        <div class="data-label">Email:</div>
+                        <div class="data-value">alice_<span id="ts1"></span>@test.com</div>
+                    </div>
+                    <div class="data-field">
+                        <div class="data-label">Password:</div>
+                        <div class="data-value">password123</div>
+                    </div>
+                </div>
+
+                <div class="test-section">
+                    <h3>🧪 Test Steps</h3>
+                    <div class="test-item pending">
+                        <div class="status-icon pending">1</div>
+                        <div class="test-content">
+                            <div class="test-label">Visit Registration Page</div>
+                            <div class="test-detail">Click the button below to open registration</div>
+                        </div>
+                    </div>
+                    <div class="test-item pending">
+                        <div class="status-icon pending">2</div>
+                        <div class="test-content">
+                            <div class="test-label">Fill Registration Form</div>
+                            <div class="test-detail">Use the test data provided above</div>
+                        </div>
+                    </div>
+                    <div class="test-item pending">
+                        <div class="status-icon pending">3</div>
+                        <div class="test-content">
+                            <div class="test-label">Submit & Verify</div>
+                            <div class="test-detail">Should redirect to login with success message</div>
+                        </div>
+                    </div>
+                    <div class="test-item pending">
+                        <div class="status-icon pending">4</div>
+                        <div class="test-content">
+                            <div class="test-label">Login with New Account</div>
+                            <div class="test-detail">Should successfully login and reach dashboard</div>
+                        </div>
+                    </div>
+                </div>
+
+                <a href="https://pathfit.online/register" target="_blank" class="btn">
+                    🚀 Test Registration
+                </a>
+                <a href="https://pathfit.online/login" target="_blank" class="btn btn-secondary">
+                    🔐 Test Login
+                </a>
+            </div>
+
+            <!-- Domain 2: Railway -->
+            <div class="test-card">
+                <h2>
+                    <span>🚂</span>
+                    Railway Deployment
+                    <span class="domain-badge badge-railway">Railway</span>
+                </h2>
+
+                <div class="test-data-box">
+                    <h4>Test User #2 Data</h4>
+                    <div class="data-field">
+                        <div class="data-label">First Name:</div>
+                        <div class="data-value">Bob</div>
+                    </div>
+                    <div class="data-field">
+                        <div class="data-label">Last Name:</div>
+                        <div class="data-value">Smith</div>
+                    </div>
+                    <div class="data-field">
+                        <div class="data-label">Course:</div>
+                        <div class="data-value">BS Sports Science</div>
+                    </div>
+                    <div class="data-field">
+                        <div class="data-label">Gender:</div>
+                        <div class="data-value">Male</div>
+                    </div>
+                    <div class="data-field">
+                        <div class="data-label">Email:</div>
+                        <div class="data-value">bob_<span id="ts2"></span>@test.com</div>
+                    </div>
+                    <div class="data-field">
+                        <div class="data-label">Password:</div>
+                        <div class="data-value">password123</div>
+                    </div>
+                </div>
+
+                <div class="test-section">
+                    <h3>🧪 Test Steps</h3>
+                    <div class="test-item pending">
+                        <div class="status-icon pending">1</div>
+                        <div class="test-content">
+                            <div class="test-label">Visit Registration Page</div>
+                            <div class="test-detail">Click the button below to open registration</div>
+                        </div>
+                    </div>
+                    <div class="test-item pending">
+                        <div class="status-icon pending">2</div>
+                        <div class="test-content">
+                            <div class="test-label">Fill Registration Form</div>
+                            <div class="test-detail">Use the test data provided above</div>
+                        </div>
+                    </div>
+                    <div class="test-item pending">
+                        <div class="status-icon pending">3</div>
+                        <div class="test-content">
+                            <div class="test-label">Submit & Verify</div>
+                            <div class="test-detail">Should redirect to login with success message</div>
+                        </div>
+                    </div>
+                    <div class="test-item pending">
+                        <div class="status-icon pending">4</div>
+                        <div class="test-content">
+                            <div class="test-label">Login with New Account</div>
+                            <div class="test-detail">Should successfully login and reach dashboard</div>
+                        </div>
+                    </div>
+                </div>
+
+                <a href="https://pathfit-production.up.railway.app/register" target="_blank" class="btn">
+                    🚀 Test Registration
+                </a>
+                <a href="https://pathfit-production.up.railway.app/login" target="_blank" class="btn btn-secondary">
+                    🔐 Test Login
+                </a>
+            </div>
+        </div>
+
+        <!-- Cross-Domain Test -->
+        <div class="test-card" style="margin-bottom: 30px;">
+            <h2>🔄 Cross-Domain Verification Test</h2>
+            <div class="alert alert-warning">
+                <span style="font-size: 24px;">⚠️</span>
+                <div>
+                    <strong>Critical Test:</strong> This verifies both domains use the SAME database.
+                </div>
+            </div>
+
+            <div class="test-section">
+                <h3>Test Scenario 1: Register on pathfit.online, Login on Railway</h3>
+                <div class="test-item pending">
+                    <div class="status-icon pending">1</div>
+                    <div class="test-content">
+                        <div class="test-label">Register Alice on pathfit.online</div>
+                        <div class="test-detail">Email: alice_<span id="ts3"></span>@test.com</div>
+                    </div>
+                </div>
+                <div class="test-item pending">
+                    <div class="status-icon pending">2</div>
+                    <div class="test-content">
+                        <div class="test-label">Try to login with Alice on Railway</div>
+                        <div class="test-detail">Should work if both use same database ✅</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="test-section">
+                <h3>Test Scenario 2: Register on Railway, Login on pathfit.online</h3>
+                <div class="test-item pending">
+                    <div class="status-icon pending">1</div>
+                    <div class="test-content">
+                        <div class="test-label">Register Bob on Railway</div>
+                        <div class="test-detail">Email: bob_<span id="ts4"></span>@test.com</div>
+                    </div>
+                </div>
+                <div class="test-item pending">
+                    <div class="status-icon pending">2</div>
+                    <div class="test-content">
+                        <div class="test-label">Try to login with Bob on pathfit.online</div>
+                        <div class="test-detail">Should work if both use same database ✅</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Database Configuration Comparison -->
+        <div class="test-card" style="margin-bottom: 30px;">
+            <h2>⚙️ Database Configuration</h2>
+            <div class="alert alert-success">
+                <span style="font-size: 24px;">✓</span>
+                <div>
+                    <strong>Expected Configuration:</strong> Both domains should use these Railway database credentials.
+                </div>
+            </div>
+
+            <table class="comparison-table">
+                <thead>
+                    <tr>
+                        <th>Setting</th>
+                        <th>Expected Value</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>DB_HOST</td>
+                        <td><code>shuttle.proxy.rlwy.net</code></td>
+                    </tr>
+                    <tr>
+                        <td>DB_PORT</td>
+                        <td><code>10519</code></td>
+                    </tr>
+                    <tr>
+                        <td>DB_DATABASE</td>
+                        <td><code>railway</code></td>
+                    </tr>
+                    <tr>
+                        <td>DB_USERNAME</td>
+                        <td><code>root</code></td>
+                    </tr>
+                    <tr>
+                        <td>DB_PASSWORD</td>
+                        <td><code>yrxVjcGIkzEUSNackIDSDlqmNhNnzKMp</code></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Verification Checklist -->
+        <div class="test-card">
+            <h2>✅ Verification Checklist</h2>
+            <p style="margin-bottom: 20px; color: #8A9480;">Check off each item as you complete the tests:</p>
+            
+            <ul class="checklist">
+                <li>
+                    <input type="checkbox" id="check1">
+                    <label for="check1">Registration works on pathfit.online</label>
+                </li>
+                <li>
+                    <input type="checkbox" id="check2">
+                    <label for="check2">Registration works on Railway deployment</label>
+                </li>
+                <li>
+                    <input type="checkbox" id="check3">
+                    <label for="check3">Login works on pathfit.online with newly registered account</label>
+                </li>
+                <li>
+                    <input type="checkbox" id="check4">
+                    <label for="check4">Login works on Railway with newly registered account</label>
+                </li>
+                <li>
+                    <input type="checkbox" id="check5">
+                    <label for="check5">User registered on pathfit.online can login on Railway</label>
+                </li>
+                <li>
+                    <input type="checkbox" id="check6">
+                    <label for="check6">User registered on Railway can login on pathfit.online</label>
+                </li>
+                <li>
+                    <input type="checkbox" id="check7">
+                    <label for="check7">Both domains show same user count in database</label>
+                </li>
+                <li>
+                    <input type="checkbox" id="check8">
+                    <label for="check8">No error messages during registration</label>
+                </li>
+                <li>
+                    <input type="checkbox" id="check9">
+                    <label for="check9">Success message appears after registration</label>
+                </li>
+                <li>
+                    <input type="checkbox" id="check10">
+                    <label for="check10">Dashboard loads correctly after login</label>
+                </li>
+            </ul>
+
+            <div id="result" style="margin-top: 20px;"></div>
+        </div>
+    </div>
+
+    <script>
+        // Generate unique timestamp for emails
+        const timestamp = Math.floor(Date.now() / 1000);
+        document.getElementById('ts1').textContent = timestamp;
+        document.getElementById('ts2').textContent = timestamp;
+        document.getElementById('ts3').textContent = timestamp;
+        document.getElementById('ts4').textContent = timestamp;
+
+        // Check completion
+        const checkboxes = document.querySelectorAll('.checklist input[type="checkbox"]');
+        const resultDiv = document.getElementById('result');
+
+        checkboxes.forEach(checkbox => {
+            checkbox.addEventListener('change', updateResult);
+        });
+
+        function updateResult() {
+            const total = checkboxes.length;
+            const checked = document.querySelectorAll('.checklist input[type="checkbox"]:checked').length;
+            const percentage = Math.round((checked / total) * 100);
+
+            let alertClass = 'alert-warning';
+            let icon = '⚠️';
+            let message = 'Keep testing...';
+
+            if (percentage === 100) {
+                alertClass = 'alert-success';
+                icon = '🎉';
+                message = 'Perfect! Both domains are working correctly with the same Railway database!';
+            } else if (percentage >= 70) {
+                alertClass = 'alert-info';
+                icon = '👍';
+                message = 'Good progress! Complete remaining tests.';
+            }
+
+            resultDiv.innerHTML = `
+                <div class="alert ${alertClass}">
+                    <span style="font-size: 24px;">${icon}</span>
+                    <div>
+                        <strong>Progress: ${checked}/${total} (${percentage}%)</strong><br>
+                        ${message}
+                    </div>
+                </div>
+            `;
+        }
+    </script>
+</body>
+</html>
