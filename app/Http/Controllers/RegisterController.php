@@ -7,18 +7,17 @@ use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\DB;
 
 class RegisterController extends Controller
 {
     public function registerread(Request $request)
     {
-        // Handle GET request - show registration form
         return view('register');
     }
 
     public function register(Request $request)
     {
-        // Validate the request
         $validator = Validator::make($request->all(), [
             'fname' => 'required|string|max:255',
             'mname' => 'nullable|string|max:255',
@@ -37,7 +36,8 @@ class RegisterController extends Controller
         }
 
         try {
-            // Create the user
+            DB::beginTransaction();
+            
             $fullName = trim($request->fname . ' ' . ($request->mname ? $request->mname . ' ' : '') . $request->lname);
             $user = User::create([
                 'name' => $fullName,
@@ -51,16 +51,19 @@ class RegisterController extends Controller
                 'role' => 'Athlete',
                 'email_verified_at' => now(),
             ]);
+            
+            DB::commit();
 
-            // Return to login page with success message
-            return redirect()->route('login')->with('success', 'Registration successful! Please login to continue.');
+            return redirect()->route('login.form')->with('success', 'Registration successful! Please login to continue.');
         } catch (\Exception $e) {
-            Log::error('Registration error: ' . $e->getMessage(), ['exception' => $e]);
+            DB::rollBack();
+            Log::error('Registration error: ' . $e->getMessage(), [
+                'exception' => $e,
+                'trace' => $e->getTraceAsString()
+            ]);
             return redirect()->back()
                 ->withInput()
                 ->with('failed', 'Registration failed: ' . $e->getMessage());
         }
     }
-
-
 }
