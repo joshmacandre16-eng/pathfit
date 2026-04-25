@@ -12,11 +12,14 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         $this->call([
-            SportSeeder::class,
             UserSeeder::class,
             SportActivitySeeder::class,
+            SportAvailableSeeder::class,
+            TrainingScheduleSeeder::class,
+            ActivityReportSeeder::class,
+            MessageSeeder::class,
+            SessionScheduleSeeder::class,
+            SportRequirementSeeder::class,
         ]);
     }
 }
-
-namespace Database\Seeders;

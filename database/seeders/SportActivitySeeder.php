@@ -2,67 +2,61 @@
 
 namespace Database\Seeders;
 
-use App\Models\SportActivity;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use App\Models\SportActivity;
 
 class SportActivitySeeder extends Seeder
 {
-    use WithoutModelEvents;
-
-    /**
-     * Run the database seeds.
-     */
     public function run(): void
     {
-        SportActivity::create([
-            'name' => 'Running',
-            'description' => 'Cardiovascular exercise involving sustained running at various paces',
-        ]);
+        $activities = [
+            [
+                'name' => 'Basketball',
+                'description' => 'Team sport played on a court with two hoops. Develops coordination, teamwork, and cardiovascular fitness.'
+            ],
+            [
+                'name' => 'Football',
+                'description' => 'Popular team sport that builds endurance, strength, and strategic thinking skills.'
+            ],
+            [
+                'name' => 'Swimming',
+                'description' => 'Full-body workout that improves cardiovascular health and builds muscle strength.'
+            ],
+            [
+                'name' => 'Tennis',
+                'description' => 'Racket sport that enhances hand-eye coordination, agility, and mental focus.'
+            ],
+            [
+                'name' => 'Track and Field',
+                'description' => 'Collection of athletic events including running, jumping, and throwing competitions.'
+            ],
+            [
+                'name' => 'Volleyball',
+                'description' => 'Team sport that develops jumping ability, quick reflexes, and communication skills.'
+            ],
+            [
+                'name' => 'Badminton',
+                'description' => 'Racket sport that improves speed, agility, and precision in movements.'
+            ],
+            [
+                'name' => 'Table Tennis',
+                'description' => 'Fast-paced sport that enhances reflexes, concentration, and hand-eye coordination.'
+            ],
+            [
+                'name' => 'Boxing',
+                'description' => 'Combat sport that builds strength, endurance, and self-discipline.'
+            ],
+            [
+                'name' => 'Martial Arts',
+                'description' => 'Traditional combat practices that develop flexibility, balance, and mental discipline.'
+            ]
+        ];
 
-        SportActivity::create([
-            'name' => 'Weightlifting',
-            'description' => 'Strength training using free weights or machines to build muscle mass',
-        ]);
-
-        SportActivity::create([
-            'name' => 'Yoga',
-            'description' => 'Physical and mental practice involving body postures and breathing techniques',
-        ]);
-
-        SportActivity::create([
-            'name' => 'Cycling',
-            'description' => 'Cardiovascular exercise using a bicycle for transportation or recreation',
-        ]);
-
-        SportActivity::create([
-            'name' => 'Swimming',
-            'description' => 'Full-body workout performed in water using various swimming strokes',
-        ]);
-
-        SportActivity::create([
-            'name' => 'HIIT',
-            'description' => 'High-Intensity Interval Training combining short bursts of intense exercise with recovery periods',
-        ]);
-
-        SportActivity::create([
-            'name' => 'Pilates',
-            'description' => 'Low-impact exercise method focusing on core strength, flexibility, and muscle control',
-        ]);
-
-        SportActivity::create([
-            'name' => 'CrossFit',
-            'description' => 'High-intensity fitness program incorporating elements from several sports and types of exercise',
-        ]);
-
-        SportActivity::create([
-            'name' => 'Boxing',
-            'description' => 'Combat sport and martial art involving punching techniques and footwork',
-        ]);
-
-        SportActivity::create([
-            'name' => 'Dancing',
-            'description' => 'Rhythmic movement to music, including various dance styles for fitness and expression',
-        ]);
+        foreach ($activities as $activity) {
+            SportActivity::updateOrCreate(
+                ['name' => $activity['name']],
+                $activity
+            );
+        }
     }
 }
